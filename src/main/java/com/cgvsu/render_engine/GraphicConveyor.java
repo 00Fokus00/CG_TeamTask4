@@ -65,6 +65,6 @@ public class GraphicConveyor {
 
     public static Vector2f vertexToPoint(final Vector3f vertex, final int width, final int height) {
         return new Vector2f(((width - 1) / 2) * vertex.getX() + ((width - 1) / 2), (((1 - height) / 2) * vertex.getY()) + ((height - 1) / 2));
-       /* return new Vector2f(vertex.getX() * width + width / 2.0F, -vertex.getY() * height + height / 2.0F);*/
+       /*return new Vector2f(vertex.getX() * width + width / 2.0F, -vertex.getY() * height + height / 2.0F);*/
     }
 }

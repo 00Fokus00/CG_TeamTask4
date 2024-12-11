@@ -35,7 +35,7 @@ public class GuiController {
 
     private Camera camera = new Camera(
             new Vector3f(0, 0, 100),
-            new Vector3f(),
+            new Vector3f(0, 0, 0),
             1.0F, 1, 0.01F, 100);
 
     private Timeline timeline;
@@ -45,22 +45,18 @@ public class GuiController {
         anchorPane.prefWidthProperty().addListener((ov, oldValue, newValue) -> canvas.setWidth(newValue.doubleValue()));
         anchorPane.prefHeightProperty().addListener((ov, oldValue, newValue) -> canvas.setHeight(newValue.doubleValue()));
 
-        timeline = new Timeline();
-        timeline.setCycleCount(Animation.INDEFINITE);
-
-        KeyFrame frame = new KeyFrame(Duration.millis(15), event -> {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(0.015), event -> {
             double width = canvas.getWidth();
             double height = canvas.getHeight();
 
             canvas.getGraphicsContext2D().clearRect(0, 0, width, height);
-            camera.setAspectRatio((float) (width / height));
+            camera.setAspectRatio((float) (height / width));
 
             if (mesh != null) {
                 RenderEngine.render(canvas.getGraphicsContext2D(), camera, mesh, (int) width, (int) height);
             }
-        });
-
-        timeline.getKeyFrames().add(frame);
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
 
@@ -108,11 +104,11 @@ public class GuiController {
 
     @FXML
     public void handleCameraUp(ActionEvent actionEvent) {
-        camera.movePosition(new Vector3f(0, TRANSLATION, 0));
+        camera.moveTarget(new Vector3f(0, TRANSLATION, 0));
     }
 
     @FXML
     public void handleCameraDown(ActionEvent actionEvent) {
-        camera.movePosition(new Vector3f(0, -TRANSLATION, 0));
+        camera.moveTarget(new Vector3f(0, -TRANSLATION, 0));
     }
 }
