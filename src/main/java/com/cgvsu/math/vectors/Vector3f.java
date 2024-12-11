@@ -35,6 +35,18 @@ public class Vector3f {
                 && Math.abs(this.z - vector3f.getZ()) < EPS;
     }
 
+    public float getZ() {
+        return z;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public float getX() {
+        return x;
+    }
+
     public Vector3f add(Vector3f vector3f) {
         this.x += vector3f.getX();
         this.y += vector3f.getY();
