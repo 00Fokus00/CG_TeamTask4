@@ -30,6 +30,7 @@ public class RenderEngine {
         Matrix4f modelViewProjectionMatrix = ((projectionMatrix).multiplyByMatrix(viewMatrix).multiplyByMatrix(modelMatrix));
 
 
+
         final int nPolygons = mesh.polygons.size();
         for (int polygonInd = 0; polygonInd < nPolygons; ++polygonInd) {
             final int nVerticesInPolygon = mesh.polygons.get(polygonInd).getVertexIndices().size();
@@ -41,8 +42,9 @@ public class RenderEngine {
                 //javax.vecmath.Vector3f vertexVecmath = new javax.vecmath.Vector3f(vertex3.x, vertex3.y, vertex3.z);
 
                 //Vector2f resultPoint = vertexToPoint(multiplyMatrix4ByVector3(modelViewProjectionMatrix, vertexVecmath), width, height);
-                Vector4f vertex4 = new Vector4f(vertex3.getX(), vertex3.getY(), vertex3.getY(), 1);
+                Vector4f vertex4 = new Vector4f(vertex3.getX(), vertex3.getY(), vertex3.getZ(), 1);
                 Vector4f vectorResult4 = modelViewProjectionMatrix.multiplyByVector(vertex4);
+                vectorResult4.divideByScalar(vectorResult4.getW());
                 Vector3f vectorResult3 = new Vector3f(vectorResult4.getX(), vectorResult4.getY(), vectorResult4.getZ());
                 Vector2f resultPoint = vertexToPoint(vectorResult3, width, height);
 
