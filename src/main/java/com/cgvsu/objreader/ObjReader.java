@@ -1,7 +1,7 @@
 package com.cgvsu.objreader;
 
-import com.cgvsu.math.Vector2f;
-import com.cgvsu.math.Vector3f;
+import com.cgvsu.math.vectors.Vector2f;
+import com.cgvsu.math.vectors.Vector3f;
 import com.cgvsu.model.Model;
 import com.cgvsu.model.Polygon;
 
@@ -23,7 +23,7 @@ public class ObjReader {
 		Scanner scanner = new Scanner(fileContent);
 		while (scanner.hasNextLine()) {
 			final String line = scanner.nextLine();
-			ArrayList<String> wordsInLine = new ArrayList<String>(Arrays.asList(line.split("\\s+")));
+			ArrayList<String> wordsInLine = new ArrayList<>(Arrays.asList(line.split("\\s+")));
 			if (wordsInLine.isEmpty()) {
 				continue;
 			}
