@@ -89,4 +89,16 @@ public class Vector4f {
     public float scalarProduct(Vector4f vector4f) {
         return this.x * vector4f.getX() + this.y * vector4f.getY() + this.z * vector4f.getZ() + this.w * vector4f.getW();
     }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public float getZ() {
+        return z;
+    }
 }

@@ -74,4 +74,13 @@ public class Vector2f {
     public float scalarProduct(Vector2f vector2f) {
         return this.x * vector2f.getX() + this.y * vector2f.getY();
     }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
 }
