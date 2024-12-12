@@ -1,4 +1,3 @@
-/* Фон области, где находится контент (видимая часть) */
 .scroll-pane .viewport {
     -fx-background-color: #212121; /* Цвет фона области просмотра */
 }
@@ -9,7 +8,7 @@
 }
 
 .scroll-bar:horizontal .thumb {
-    -fx-background-color: #0FC2C0; /* Цвет ползунка (слайдера) */
+    -fx-background-color: #0FC2C0; /* Цвет ползунка*/
     -fx-background-radius: 5;      /* Скругление ползунка */
 }
 
