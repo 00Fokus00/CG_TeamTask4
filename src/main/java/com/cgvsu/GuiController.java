@@ -24,6 +24,7 @@ import com.cgvsu.render_engine.Camera;
 public class GuiController {
 
     final private float TRANSLATION = 0.5F;
+    final private float ROTATION = 0.05F;
 
     @FXML
     AnchorPane anchorPane;
@@ -34,8 +35,8 @@ public class GuiController {
     private Model mesh = null;
 
     private Camera camera = new Camera(
-            new Vector3f(0, 0, 100),
-            new Vector3f(),
+            new Vector3f(0, 0, 50),
+            new Vector3f(0, 0, 0),
             1.0F, 1, 0.01F, 100);
 
     private Timeline timeline;
@@ -86,33 +87,61 @@ public class GuiController {
         }
     }
 
-    @FXML
-    public void handleCameraForward(ActionEvent actionEvent) {
-        camera.movePosition(new Vector3f(0, 0, -TRANSLATION));
-    }
-
-    @FXML
-    public void handleCameraBackward(ActionEvent actionEvent) {
-        camera.movePosition(new Vector3f(0, 0, TRANSLATION));
-    }
+//    @FXML
+//    public void handleCameraForward(ActionEvent actionEvent) {
+//        camera.movePosition(new Vector3f(0, 0, -TRANSLATION));
+//    }
+//
+//    @FXML
+//    public void handleCameraBackward(ActionEvent actionEvent) {
+//        camera.movePosition(new Vector3f(0, 0, TRANSLATION));
+//    }
 
     @FXML
     public void handleCameraLeft(ActionEvent actionEvent) {
         camera.movePosition(new Vector3f(TRANSLATION, 0, 0));
+        camera.moveTarget(new Vector3f(TRANSLATION, 0, 0));
     }
 
     @FXML
     public void handleCameraRight(ActionEvent actionEvent) {
         camera.movePosition(new Vector3f(-TRANSLATION, 0, 0));
+        camera.moveTarget(new Vector3f(-TRANSLATION, 0, 0));
     }
 
     @FXML
     public void handleCameraUp(ActionEvent actionEvent) {
-        camera.movePosition(new Vector3f(0, TRANSLATION, 0));
+        //camera.movePosition(new Vector3f(0, TRANSLATION, 0));
+        //camera.moveTarget(new Vector3f(0, TRANSLATION, 0));
+        camera.movePosition(new Vector3f(0, 0, -TRANSLATION));
+        camera.moveTarget(new Vector3f(0, 0, -TRANSLATION));
     }
 
     @FXML
     public void handleCameraDown(ActionEvent actionEvent) {
-        camera.movePosition(new Vector3f(0, -TRANSLATION, 0));
+        //camera.movePosition(new Vector3f(0, -TRANSLATION, 0));
+        //camera.moveTarget(new Vector3f(0, -TRANSLATION, 0));
+        camera.movePosition(new Vector3f(0, 0, TRANSLATION));
+        camera.moveTarget(new Vector3f(0, 0, TRANSLATION));
+    }
+
+    @FXML
+    public void handleCameraRotateUp(ActionEvent actionEvent) {
+        camera.rotateAroundTarget(-ROTATION, 0);
+    }
+
+    @FXML
+    public void handleCameraRotateDown(ActionEvent actionEvent) {
+        camera.rotateAroundTarget(ROTATION, 0);
+    }
+
+    @FXML
+    public void handleCameraRotateLeft(ActionEvent actionEvent) {
+        camera.rotateAroundTarget(0, ROTATION);
+    }
+
+    @FXML
+    public void handleCameraRotateRight(ActionEvent actionEvent) {
+        camera.rotateAroundTarget(0, -ROTATION);
     }
 }
