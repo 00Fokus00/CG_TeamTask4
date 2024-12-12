@@ -15,6 +15,30 @@ public class Camera {
     private float nearPlane;
     private float farPlane;
 
+    public void setPosition(Vector3f position) {
+        this.position = position;
+    }
+
+    public void setTarget(Vector3f target) {
+        this.target = target;
+    }
+
+    public void setFov(float fov) {
+        this.fov = fov;
+    }
+
+    public void setAspectRatio(float aspectRatio) {
+        this.aspectRatio = aspectRatio;
+    }
+
+    public void setNearPlane(float nearPlane) {
+        this.nearPlane = nearPlane;
+    }
+
+    public void setFarPlane(float farPlane) {
+        this.farPlane = farPlane;
+    }
+
     public Camera(
             final Vector3f position,
             final Vector3f target,

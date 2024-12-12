@@ -33,4 +33,15 @@ public class Polygon {
         this.normalIndices = normalIndices;
     }
 
+    public ArrayList<Integer> getVertexIndices() {
+        return vertexIndices;
+    }
+
+    public ArrayList<Integer> getTextureVertexIndices() {
+        return textureVertexIndices;
+    }
+
+    public ArrayList<Integer> getNormalIndices() {
+        return normalIndices;
+    }
 }
