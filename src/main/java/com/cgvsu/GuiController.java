@@ -1,11 +1,15 @@
 package com.cgvsu;
 
+import com.cgvsu.render_engine.Normals;
 import com.cgvsu.render_engine.RenderEngine;
+//import com.cgvsu.render_engine.Triangulation;
+import com.cgvsu.render_engine.Triangulation;
 import javafx.fxml.FXML;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -32,6 +36,7 @@ public class GuiController {
     private Canvas canvas;
 
     private Model mesh = null;
+    private Model meshTriangulated = null;
 
     private Camera camera = new Camera(
             new Vector3f(0, 00, 100),
@@ -80,6 +85,11 @@ public class GuiController {
         try {
             String fileContent = Files.readString(fileName);
             mesh = ObjReader.read(fileContent);
+//            meshTriangulated = Triangulation.triangulate(mesh);
+//            mesh = meshTriangulated;
+
+            meshTriangulated.normals = Normals.calculateNormals(meshTriangulated);
+            System.out.println(meshTriangulated.normals.size());
             // todo: обработка ошибок
         } catch (IOException exception) {
 

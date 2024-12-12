@@ -1,11 +1,21 @@
 package com.cgvsu.render_engine;
 
+import com.cgvsu.model.Model;
+import com.cgvsu.model.Polygon;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.paint.Color;
 
 public class Rasterization {
-    public static void fillTriangle(
+    public void rasterizationModel(Model model, GraphicsContext gc) {
+        for (int i = 0; i < model.polygons.size(); i++) {
+            Polygon currPolygon = model.polygons.get(i);
+
+//            int[] arrX = new int[] {model.vertices.get(currPolygon.getVertexIndices().get(0)).x, }
+        }
+    }
+
+    private static void fillTriangle(
             final GraphicsContext graphicsContext,
             final int[] arrX,
             final int[] arrY,
@@ -38,21 +48,21 @@ public class Rasterization {
         }
     }
 
-    private static double determinator(int[][] arr) {
+    private static double det(int[][] arr) {
         return arr[0][0] * arr[1][1] * arr[2][2] + arr[1][0] * arr[0][2] * arr[2][1] +
                 arr[0][1] * arr[1][2] * arr[2][0] - arr[0][2] * arr[1][1] * arr[2][0] -
                 arr[0][0] * arr[1][2] * arr[2][1] - arr[0][1] * arr[1][0] * arr[2][2];
     }
 
     private static double[] barizentricCalculator(int x, int y, int[] arrX, int[] arrY) {
-        final double generalDeterminant = determinator(new int[][]{arrX, arrY, new int[]{1, 1, 1}});
-        final double coordinate0 = Math.abs(determinator(
+        final double generalDeterminant = det(new int[][]{arrX, arrY, new int[]{1, 1, 1}});
+        final double coordinate0 = Math.abs(det(
                 new int[][]{new int[]{x, arrX[1], arrX[2]}, new int[]{y, arrY[1], arrY[2]}, new int[]{1, 1, 1}}) /
                 generalDeterminant);
-        final double coordinate1 = Math.abs(determinator(
+        final double coordinate1 = Math.abs(det(
                 new int[][]{new int[]{arrX[0], x, arrX[2]}, new int[]{arrY[0], y, arrY[2]}, new int[]{1, 1, 1}}) /
                 generalDeterminant);
-        final double coordinate2 = Math.abs(determinator(
+        final double coordinate2 = Math.abs(det(
                 new int[][]{new int[]{arrX[0], arrX[1], x}, new int[]{arrY[0], arrY[1], y}, new int[]{1, 1, 1}}) /
                 generalDeterminant);
         return new double[]{coordinate0, coordinate1, coordinate2};
