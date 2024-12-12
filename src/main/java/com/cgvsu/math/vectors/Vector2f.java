@@ -1,10 +1,5 @@
 package com.cgvsu.math.vectors;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 public class Vector2f {
     private float x;
     private float y;
@@ -20,6 +15,22 @@ public class Vector2f {
         this.y = y;
     }
 
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -28,59 +39,52 @@ public class Vector2f {
             return false;
         }
         Vector2f vector2f = (Vector2f) o;
-        return Math.abs(this.x - vector2f.getX()) < EPS
-                && Math.abs(this.y - vector2f.getY()) < EPS;
+        return Math.abs(this.x - vector2f.x) < EPS
+                && Math.abs(this.y - vector2f.y) < EPS;
     }
 
-    public Vector2f add(Vector2f vector2f) {
-        this.x += vector2f.getX();
-        this.y += vector2f.getY();
-        return this;
+    @Override
+    public String toString() {
+        return "Vector2f{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
     }
 
-    public Vector2f subtract(Vector2f vector2f) {
-        this.x -= vector2f.getX();
-        this.y -= vector2f.getY();
-        return this;
+    public static Vector2f add(Vector2f vector1, Vector2f vector2) {
+        return new Vector2f(vector1.x + vector2.x, vector1.y + vector2.y);
     }
 
-    public Vector2f multiplyByScalar(float scalar) {
+    public static Vector2f subtract(Vector2f vector1, Vector2f vector2) {
+        return new Vector2f(vector1.x - vector2.x, vector1.y - vector2.y);
+    }
+
+    public void multiply(float scalar) {
         this.x *= scalar;
         this.y *= scalar;
-        return this;
     }
 
-    public Vector2f divideByScalar(float scalar) throws ArithmeticException {
+    public void divide(float scalar) throws ArithmeticException {
         if (Math.abs(scalar) < EPS) {
             throw new ArithmeticException("Division by zero is not allowed.");
         }
         this.x /= scalar;
         this.y /= scalar;
-        return this;
     }
 
     public float getLength() {
         return (float) Math.sqrt(this.x * this.x + this.y * this.y);
     }
 
-    public Vector2f normalize() throws ArithmeticException {
+    public void normalize() throws ArithmeticException {
         float length = getLength();
         if (Math.abs(length) < EPS) {
             throw new ArithmeticException("Cannot normalize a vector with zero length.");
         }
-        return this.divideByScalar(length);
+        this.divide(length);
     }
 
-    public float scalarProduct(Vector2f vector2f) {
-        return this.x * vector2f.getX() + this.y * vector2f.getY();
+    public static float scalarProduct(Vector2f vector1, Vector2f vector2) {
+        return vector1.x * vector2.x + vector1.y * vector2.y;
     }
-
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
 }

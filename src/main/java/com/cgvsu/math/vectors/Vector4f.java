@@ -1,10 +1,5 @@
 package com.cgvsu.math.vectors;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 public class Vector4f {
     private float x;
     private float y;
@@ -25,6 +20,38 @@ public class Vector4f {
         this.w = w;
     }
 
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public float getZ() {
+        return z;
+    }
+
+    public void setZ(float z) {
+        this.z = z;
+    }
+
+    public float getW() {
+        return w;
+    }
+
+    public void setW(float w) {
+        this.w = w;
+    }
+
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -33,37 +60,42 @@ public class Vector4f {
             return false;
         }
         Vector4f vector4f = (Vector4f) o;
-        return Math.abs(this.x - vector4f.getX()) < EPS
-                && Math.abs(this.y - vector4f.getY()) < EPS
-                && Math.abs(this.z - vector4f.getZ()) < EPS
-                && Math.abs(this.w - vector4f.getW()) < EPS;
+        return Math.abs(this.x - vector4f.x) < EPS
+                && Math.abs(this.y - vector4f.y) < EPS
+                && Math.abs(this.z - vector4f.z) < EPS
+                && Math.abs(this.w - vector4f.w) < EPS;
     }
 
-    public Vector4f add(Vector4f vector4f) {
-        this.x += vector4f.getX();
-        this.y += vector4f.getY();
-        this.z += vector4f.getZ();
-        this.w += vector4f.getW();
-        return this;
+    @Override
+    public String toString() {
+        return "Vector4f{" +
+                "x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                ", w=" + w +
+                '}';
     }
 
-    public Vector4f subtract(Vector4f vector4f) {
-        this.x -= vector4f.getX();
-        this.y -= vector4f.getY();
-        this.z -= vector4f.getZ();
-        this.w -= vector4f.getW();
-        return this;
+    public Vector3f toVector3f() {
+        return new Vector3f(this.x, this.y, this.w);
     }
 
-    public Vector4f multiplyByScalar(float scalar) {
+    public static Vector4f add(Vector4f vector1, Vector4f vector2) {
+        return new Vector4f(vector1.x + vector2.x, vector1.y + vector2.y, vector1.z + vector2.z, vector1.w + vector2.w);
+    }
+
+    public static Vector4f subtract(Vector4f vector1, Vector4f vector2) {
+        return new Vector4f(vector1.x - vector2.x, vector1.y - vector2.y, vector1.z - vector2.z, vector1.w - vector2.w);
+    }
+
+    public void multiply(float scalar) {
         this.x *= scalar;
         this.y *= scalar;
         this.z *= scalar;
         this.w *= scalar;
-        return this;
     }
 
-    public Vector4f divideByScalar(float scalar) throws ArithmeticException {
+    public void divide(float scalar) throws ArithmeticException {
         if (Math.abs(scalar) < EPS) {
             throw new ArithmeticException("Division by zero is not allowed.");
         }
@@ -71,34 +103,21 @@ public class Vector4f {
         this.y /= scalar;
         this.z /= scalar;
         this.w /= scalar;
-        return this;
     }
 
     public float getLength() {
         return (float) Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w);
     }
 
-    public Vector4f normalize() throws ArithmeticException {
+    public void normalize() throws ArithmeticException {
         float length = getLength();
         if (Math.abs(length) < EPS) {
             throw new ArithmeticException("Cannot normalize a vector with zero length.");
         }
-        return this.divideByScalar(length);
+        this.divide(length);
     }
 
-    public float scalarProduct(Vector4f vector4f) {
-        return this.x * vector4f.getX() + this.y * vector4f.getY() + this.z * vector4f.getZ() + this.w * vector4f.getW();
-    }
-
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    public float getZ() {
-        return z;
+    public static float scalarProduct(Vector4f vector1, Vector4f vector2) {
+        return vector1.x * vector2.x + vector1.y * vector2.y + vector1.z * vector2.z + vector1.w * vector2.w;
     }
 }

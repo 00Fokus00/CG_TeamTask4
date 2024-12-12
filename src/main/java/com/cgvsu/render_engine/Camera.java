@@ -3,7 +3,7 @@ package com.cgvsu.render_engine;
 import com.cgvsu.math.matrices.Matrix4f;
 import com.cgvsu.math.vectors.Vector3f;
 import lombok.Data;
-import lombok.Setter;
+import static com.cgvsu.math.vectors.Vector3f.add;
 
 @Data
 public class Camera {
@@ -31,11 +31,11 @@ public class Camera {
     }
 
     public void movePosition(final Vector3f translation) {
-        this.position.add(translation);
+        this.position = add(this.position, translation);
     }
 
     public void moveTarget(final Vector3f translation) {
-        this.target.add(translation);
+        this.target = add(this.target, translation);
     }
 
     Matrix4f getViewMatrix() {
