@@ -1,11 +1,8 @@
 package com.cgvsu.math.matrices;
 
 import com.cgvsu.math.vectors.Vector2f;
-import lombok.Getter;
-import lombok.Setter;
+import static com.cgvsu.math.vectors.Vector2f.scalarProduct;
 
-@Getter
-@Setter
 public class Matrix2f {
     private Vector2f v1;
     private Vector2f v2;
@@ -27,11 +24,6 @@ public class Matrix2f {
         this.v2 = new Vector2f(matrix[2], matrix[3]);
     }
 
-    public Matrix2f(float m0, float m1, float m2, float m3) throws IllegalArgumentException {
-        this.v1 = new Vector2f(m0, m1);
-        this.v2 = new Vector2f(m2, m3);
-    }
-
     public static Matrix2f unitMatrix() {
         return new Matrix2f(new Vector2f(1, 0),
                 new Vector2f(0, 1));
@@ -40,6 +32,22 @@ public class Matrix2f {
     public static Matrix2f zeroMatrix() {
         return new Matrix2f(new Vector2f(),
                 new Vector2f());
+    }
+
+    public Vector2f getV1() {
+        return v1;
+    }
+
+    public void setV1(Vector2f v1) {
+        this.v1 = v1;
+    }
+
+    public Vector2f getV2() {
+        return v2;
+    }
+
+    public void setV2(Vector2f v2) {
+        this.v2 = v2;
     }
 
     public boolean equals(Object o) {
@@ -54,33 +62,52 @@ public class Matrix2f {
                 && this.v2.equals(matrix2f.getV2());
     }
 
-    public Matrix2f add(Matrix2f matrix2f) {
-        this.v1.add(matrix2f.getV1());
-        this.v2.add(matrix2f.getV2());
-        return this;
+    @Override
+    public String toString() {
+        return "Matrix2f{" +
+                "v1=" + v1 +
+                ", v2=" + v2 +
+                '}';
     }
 
-    public Matrix2f subtract(Matrix2f matrix2f) {
-        this.v1.subtract(matrix2f.getV1());
-        this.v2.subtract(matrix2f.getV2());
-        return this;
-    }
+//    public Matrix2f add(Matrix2f matrix2f) {
+//        this.v1.add(matrix2f.getV1());
+//        this.v2.add(matrix2f.getV2());
+//        return this;
+//    }
+//
+//    public Matrix2f subtract(Matrix2f matrix2f) {
+//        this.v1.subtract(matrix2f.getV1());
+//        this.v2.subtract(matrix2f.getV2());
+//        return this;
+//    }
 
-    public Vector2f multiplyByVector(Vector2f vector2f) {
-        Vector2f result = new Vector2f();
-        result.setX(this.v1.scalarProduct(vector2f));
-        result.setY(this.v2.scalarProduct(vector2f));
+    public static Matrix2f add(Matrix2f matrix1, Matrix2f matrix2) {
+        Matrix2f result = new Matrix2f();
+        result.setV1(Vector2f.add(matrix1.v1, matrix2.v1));
+        result.setV2(Vector2f.add(matrix1.v2, matrix2.v2));
         return result;
     }
 
-    public Matrix2f multiplyByMatrix(Matrix2f matrix2f) {
+    public static Matrix2f subtract(Matrix2f matrix1, Matrix2f matrix2) {
+        Matrix2f result = new Matrix2f();
+        result.setV1(Vector2f.subtract(matrix1.v1, matrix2.v1));
+        result.setV2(Vector2f.subtract(matrix1.v2, matrix2.v2));
+        return result;
+    }
+
+    public static Vector2f multiply(Matrix2f matrix2f, Vector2f vector2f) {
+        return new Vector2f(scalarProduct(matrix2f.v1, vector2f), scalarProduct(matrix2f.v2, vector2f));
+    }
+
+    public static Matrix2f multiply(Matrix2f matrix1, Matrix2f matrix2) {
         Vector2f v1Result = new Vector2f();
-        v1Result.setX(this.v1.scalarProduct(new Vector2f(matrix2f.getV1().getX(), matrix2f.getV2().getX())));
-        v1Result.setY(this.v1.scalarProduct(new Vector2f(matrix2f.getV1().getY(), matrix2f.getV2().getY())));
+        v1Result.setX(Vector2f.scalarProduct(matrix1.v1, new Vector2f(matrix2.v1.getX(), matrix2.v2.getX())));
+        v1Result.setY(Vector2f.scalarProduct(matrix1.v1, new Vector2f(matrix2.v1.getY(), matrix2.v2.getY())));
 
         Vector2f v2Result = new Vector2f();
-        v2Result.setX(this.v2.scalarProduct(new Vector2f(matrix2f.getV1().getX(), matrix2f.getV2().getX())));
-        v2Result.setY(this.v2.scalarProduct(new Vector2f(matrix2f.getV1().getY(), matrix2f.getV2().getY())));
+        v2Result.setX(Vector2f.scalarProduct(matrix1.v2, new Vector2f(matrix2.v1.getX(), matrix2.v2.getX())));
+        v2Result.setY(Vector2f.scalarProduct(matrix1.v2, new Vector2f(matrix2.v1.getY(), matrix2.v2.getY())));
 
         return new Matrix2f(v1Result, v2Result);
     }

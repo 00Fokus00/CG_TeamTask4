@@ -1,10 +1,5 @@
 package com.cgvsu.math.vectors;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 public class Vector3f {
     private float x;
     private float y;
@@ -22,6 +17,30 @@ public class Vector3f {
         this.z = z;
     }
 
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public float getZ() {
+        return z;
+    }
+
+    public void setZ(float z) {
+        this.z = z;
+    }
+
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -30,71 +49,64 @@ public class Vector3f {
             return false;
         }
         Vector3f vector3f = (Vector3f) o;
-        return Math.abs(this.x - vector3f.getX()) < EPS
-                && Math.abs(this.y - vector3f.getY()) < EPS
-                && Math.abs(this.z - vector3f.getZ()) < EPS;
+        return Math.abs(this.x - vector3f.x) < EPS
+                && Math.abs(this.y - vector3f.y) < EPS
+                && Math.abs(this.z - vector3f.z) < EPS;
     }
 
-    public float getZ() {
-        return z;
+    @Override
+    public String toString() {
+        return "Vector3f{" +
+                "x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                '}';
     }
 
-    public float getY() {
-        return y;
+    public Vector4f toVector4f() {
+        return new Vector4f(this.x, this.y, this.z, 1);
     }
 
-    public float getX() {
-        return x;
+    public static Vector3f add(Vector3f vector1, Vector3f vector2) {
+        return new Vector3f(vector1.x + vector2.x, vector1.y + vector2.y, vector1.z + vector2.z);
     }
 
-    public Vector3f add(Vector3f vector3f) {
-        this.x += vector3f.getX();
-        this.y += vector3f.getY();
-        this.z += vector3f.getZ();
-        return this;
+    public static Vector3f subtract(Vector3f vector1, Vector3f vector2) {
+        return new Vector3f(vector1.x - vector2.x, vector1.y - vector2.y, vector1.z - vector2.z);
     }
 
-    public Vector3f subtract(Vector3f vector3f) {
-        this.x -= vector3f.getX();
-        this.y -= vector3f.getY();
-        this.z -= vector3f.getZ();
-        return this;
-    }
-
-    public Vector3f multiplyByScalar(float scalar) {
+    public void multiply(float scalar) {
         this.x *= scalar;
         this.y *= scalar;
         this.z *= scalar;
-        return this;
     }
 
-    public Vector3f divideByScalar(float scalar) throws ArithmeticException {
+    public void divide(float scalar) throws ArithmeticException {
         if (Math.abs(scalar) < EPS) {
             throw new ArithmeticException("Division by zero is not allowed.");
         }
         this.x /= scalar;
         this.y /= scalar;
         this.z /= scalar;
-        return this;
     }
 
     public float getLength() {
         return (float) Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
     }
 
-    public Vector3f normalize() throws ArithmeticException {
+    public void normalize() throws ArithmeticException {
         float length = getLength();
         if (Math.abs(length) < EPS) {
             throw new ArithmeticException("Cannot normalize a vector with zero length.");
         }
-        return this.divideByScalar(length);
+        this.divide(length);
     }
 
-    public float scalarProduct(Vector3f vector3f) {
-        return this.x * vector3f.getX() + this.y * vector3f.getY() + this.z * vector3f.getZ();
+    public static float scalarProduct(Vector3f vector1, Vector3f vector2) {
+        return vector1.x * vector2.x + vector1.y * vector2.y + vector1.z * vector2.z;
     }
 
-    public Vector3f vectorProduct(Vector3f vector3f) {
-        return new Vector3f(this.y * vector3f.getZ() - this.z * vector3f.getY(), this.z * vector3f.getX() - this.x * vector3f.getZ(), this.x * vector3f.getY() - this.y * vector3f.getX());
+    public static Vector3f vectorProduct(Vector3f vector1, Vector3f vector2) {
+        return new Vector3f(vector1.y * vector2.z - vector1.z * vector2.y, vector1.z * vector2.x - vector1.x * vector2.z, vector1.x * vector2.y - vector1.y * vector2.x);
     }
 }

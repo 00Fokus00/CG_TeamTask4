@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 import com.cgvsu.math.matrices.Matrix4f;
 import com.cgvsu.math.vectors.Vector2f;
-import com.cgvsu.math.vectors.Vector3f;
 import com.cgvsu.math.vectors.Vector4f;
 import javafx.scene.canvas.GraphicsContext;
 import com.cgvsu.model.Model;
+import static com.cgvsu.math.matrices.Matrix4f.multiply;
 import static com.cgvsu.render_engine.GraphicConveyor.*;
 
 public class RenderEngine {
@@ -19,34 +19,22 @@ public class RenderEngine {
             final int width,
             final int height)
     {
+
         Matrix4f modelMatrix = rotateScaleTranslate();
         Matrix4f viewMatrix = camera.getViewMatrix();
         Matrix4f projectionMatrix = camera.getProjectionMatrix();
-
-        //Matrix4f modelViewProjectionMatrix = new Matrix4f(modelMatrix);
-        //modelViewProjectionMatrix.mul(viewMatrix);
-        //modelViewProjectionMatrix.mul(projectionMatrix);
-
-        Matrix4f modelViewProjectionMatrix = ((projectionMatrix).multiplyByMatrix(viewMatrix).multiplyByMatrix(modelMatrix));
-
-
-
+        Matrix4f modelViewProjectionMatrix = multiply(multiply(projectionMatrix, viewMatrix), modelMatrix);
+        
         final int nPolygons = mesh.polygons.size();
         for (int polygonInd = 0; polygonInd < nPolygons; ++polygonInd) {
             final int nVerticesInPolygon = mesh.polygons.get(polygonInd).getVertexIndices().size();
 
             ArrayList<Vector2f> resultPoints = new ArrayList<>();
             for (int vertexInPolygonInd = 0; vertexInPolygonInd < nVerticesInPolygon; ++vertexInPolygonInd) {
-                Vector3f vertex3 = mesh.vertices.get(mesh.polygons.get(polygonInd).getVertexIndices().get(vertexInPolygonInd));
-
-                //javax.vecmath.Vector3f vertexVecmath = new javax.vecmath.Vector3f(vertex3.x, vertex3.y, vertex3.z);
-
-                //Vector2f resultPoint = vertexToPoint(multiplyMatrix4ByVector3(modelViewProjectionMatrix, vertexVecmath), width, height);
-                Vector4f vertex4 = new Vector4f(vertex3.getX(), vertex3.getY(), vertex3.getZ(), 1);
-                Vector4f vectorResult4 = modelViewProjectionMatrix.multiplyByVector(vertex4);
-                vectorResult4.divideByScalar(vectorResult4.getW());
-                Vector3f vectorResult3 = new Vector3f(vectorResult4.getX(), vectorResult4.getY(), vectorResult4.getZ());
-                Vector2f resultPoint = vertexToPoint(vectorResult3, width, height);
+                Vector4f vertex4 = mesh.vertices.get(mesh.polygons.get(polygonInd).getVertexIndices().get(vertexInPolygonInd)).toVector4f();
+                Vector4f vectorResult4 = multiply(modelViewProjectionMatrix, vertex4);
+                vectorResult4.divide(vectorResult4.getW());
+                Vector2f resultPoint = vertexToPoint(vectorResult4.toVector3f(), width, height);
 
                 resultPoints.add(resultPoint);
             }
