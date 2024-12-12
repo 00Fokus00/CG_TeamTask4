@@ -1,7 +1,10 @@
 package com.cgvsu.model;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 
+@Getter
 public class Polygon {
 
     private ArrayList<Integer> vertexIndices;
@@ -10,9 +13,9 @@ public class Polygon {
 
 
     public Polygon() {
-        vertexIndices = new ArrayList<Integer>();
-        textureVertexIndices = new ArrayList<Integer>();
-        normalIndices = new ArrayList<Integer>();
+        vertexIndices = new ArrayList<>();
+        textureVertexIndices = new ArrayList<>();
+        normalIndices = new ArrayList<>();
     }
 
     public void setVertexIndices(ArrayList<Integer> vertexIndices) {
@@ -30,15 +33,4 @@ public class Polygon {
         this.normalIndices = normalIndices;
     }
 
-    public ArrayList<Integer> getVertexIndices() {
-        return vertexIndices;
-    }
-
-    public ArrayList<Integer> getTextureVertexIndices() {
-        return textureVertexIndices;
-    }
-
-    public ArrayList<Integer> getNormalIndices() {
-        return normalIndices;
-    }
 }

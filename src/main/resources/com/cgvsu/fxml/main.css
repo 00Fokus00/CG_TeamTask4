@@ -1,0 +1,70 @@
+.scroll-pane .viewport {
+    -fx-background-color: #212121; /* Цвет фона области просмотра */
+}
+
+/* Горизонтальный скроллбар */
+.scroll-bar:horizontal {
+    -fx-background-color: #555555; /* Фон горизонтального трека */
+}
+
+.scroll-bar:horizontal .thumb {
+    -fx-background-color: #0FC2C0; /* Цвет ползунка*/
+    -fx-background-radius: 5;      /* Скругление ползунка */
+}
+
+/* Вертикальный скроллбар */
+.scroll-bar:vertical {
+    -fx-background-color: #555555; /* Фон вертикального трека */
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #0FC2C0; /* Цвет ползунка (слайдера) */
+}
+
+/* При наведении на ползунок */
+.scroll-bar .thumb:hover {
+    -fx-background-color: #008F8C; /* Цвет ползунка при наведении */
+}
+
+.titled-pane {
+    -fx-background-color: transparent; /* Убирает фон TitledPane */
+    -fx-border-color: transparent;    /* Убирает границы */
+    -fx-border-width: 0;
+}
+
+.titled-pane > .title {
+    -fx-background-color: transparent; /* Убирает фон заголовка */
+    -fx-border-color: transparent;     /* Убирает границы заголовка */
+}
+
+.titled-pane > .title > .arrow {
+    -fx-background-color: transparent; /* Убирает фон стрелки */
+    -fx-border-color: transparent;     /* Убирает границу стрелки */
+    -fx-effect: null;                  /* Убирает свечение */
+}
+
+.titled-pane > .content {
+    -fx-background-color: transparent; /* Убирает фон содержимого */
+    -fx-border-color: transparent;     /* Убирает границы содержимого */
+}
+
+/* Убираем стиль стрелочки */
+.titled-pane > .title > .arrow-button .arrow {
+    -fx-effect: none;                  /* Убирает эффекты, например свечение */
+}
+
+.button {
+    -fx-background-color: linear-gradient(to bottom, #a1a1a1, #818181);
+    -fx-text-fill: white;
+    -fx-font-size: 10px;
+}
+
+/* Эффект при наведении */
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #818181, #555555);
+}
+
+.text-field {
+ -fx-background-color: #373737;
+ -fx-text-fill: #c0c0c0;
+}

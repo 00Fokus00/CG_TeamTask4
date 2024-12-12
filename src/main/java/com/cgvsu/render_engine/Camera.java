@@ -1,8 +1,19 @@
 package com.cgvsu.render_engine;
-import javax.vecmath.Vector3f;
-import javax.vecmath.Matrix4f;
 
+import com.cgvsu.math.matrices.Matrix4f;
+import com.cgvsu.math.vectors.Vector3f;
+import lombok.Data;
+import static com.cgvsu.math.vectors.Vector3f.add;
+
+@Data
 public class Camera {
+
+    private Vector3f position;
+    private Vector3f target;
+    private float fov;
+    private float aspectRatio;
+    private float nearPlane;
+    private float farPlane;
 
     public Camera(
             final Vector3f position,
@@ -19,32 +30,12 @@ public class Camera {
         this.farPlane = farPlane;
     }
 
-    public void setPosition(final Vector3f position) {
-        this.position = position;
-    }
-
-    public void setTarget(final Vector3f target) {
-        this.target = target;
-    }
-
-    public void setAspectRatio(final float aspectRatio) {
-        this.aspectRatio = aspectRatio;
-    }
-
-    public Vector3f getPosition() {
-        return position;
-    }
-
-    public Vector3f getTarget() {
-        return target;
-    }
-
     public void movePosition(final Vector3f translation) {
-        this.position.add(translation);
+        this.position = add(this.position, translation);
     }
 
     public void moveTarget(final Vector3f translation) {
-        this.target.add(target);
+        this.target = add(this.target, translation);
     }
 
     Matrix4f getViewMatrix() {
@@ -54,11 +45,4 @@ public class Camera {
     Matrix4f getProjectionMatrix() {
         return GraphicConveyor.perspective(fov, aspectRatio, nearPlane, farPlane);
     }
-
-    private Vector3f position;
-    private Vector3f target;
-    private float fov;
-    private float aspectRatio;
-    private float nearPlane;
-    private float farPlane;
 }
