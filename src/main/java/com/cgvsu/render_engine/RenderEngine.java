@@ -8,16 +8,18 @@ import com.cgvsu.math.vectors.Vector3f;
 import com.cgvsu.math.vectors.Vector4f;
 import javafx.scene.canvas.GraphicsContext;
 import com.cgvsu.model.Model;
+import javafx.scene.paint.Color;
+
 import static com.cgvsu.render_engine.GraphicConveyor.*;
 
 public class RenderEngine {
 
     public static void render(
-            final GraphicsContext graphicsContext,
-            final Camera camera,
-            final Model mesh,
-            final int width,
-            final int height)
+            GraphicsContext graphicsContext,
+            Camera camera,
+            Model mesh,
+            int width,
+            int height)
     {
         Matrix4f modelMatrix = rotateScaleTranslate();
         Matrix4f viewMatrix = camera.getViewMatrix();
@@ -28,7 +30,6 @@ public class RenderEngine {
         //modelViewProjectionMatrix.mul(projectionMatrix);
 
         Matrix4f modelViewProjectionMatrix = ((projectionMatrix).multiplyByMatrix(viewMatrix).multiplyByMatrix(modelMatrix));
-
 
 
         final int nPolygons = mesh.polygons.size();
@@ -52,6 +53,7 @@ public class RenderEngine {
             }
 
             for (int vertexInPolygonInd = 1; vertexInPolygonInd < nVerticesInPolygon; ++vertexInPolygonInd) {
+                graphicsContext.setStroke(Color.web("#a1a1a1"));
                 graphicsContext.strokeLine(
                         resultPoints.get(vertexInPolygonInd - 1).getX(),
                         resultPoints.get(vertexInPolygonInd - 1).getY(),

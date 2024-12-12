@@ -8,7 +8,11 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
@@ -16,6 +20,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.io.IOException;
 import java.io.File;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 import com.cgvsu.model.Model;
 import com.cgvsu.objreader.ObjReader;
@@ -26,10 +34,50 @@ public class GuiController {
     final private float TRANSLATION = 0.5F;
 
     @FXML
+    public Pane canvasPane;
+    @FXML
+    public VBox modelsContainer;
+
+
+    //TODO вот в эти поля добавить координаты камеры
+    public TextField xCameraPositin;
+    public TextField yCameraPositin;
+    public TextField zCameraPositin;
+
+    //TODO вот в эти поля добавить координаты таргета
+    public TextField xTargetPositin;
+    public TextField yTargetPositin;
+    public TextField zTargetPosition;
+
+    //TODO это кнопочка для добавления новых камер, это к уважаемому Win122333)
+    public Button addCamera;
+    //TODO К нему же модели освещения
+    public Button addLightingModel;
+
+    //Поля для афинных
+    public TextField xScale;
+    public TextField yScale;
+    public TextField zScale;
+    public TextField xRotation;
+    public TextField yRotation;
+    public TextField zRotation;
+    public TextField xTrans;
+    public TextField yTrans;
+    public TextField zTrans;
+    //Кнопка для афинных
+    public Button affineTransorm;
+
+    public Button calcNormals;
+    public Button triangulation;
+
+
+    @FXML
     AnchorPane anchorPane;
 
     @FXML
     private Canvas canvas;
+
+    private int modelCounter = 1;
 
     private Model mesh = null;
 
@@ -42,8 +90,8 @@ public class GuiController {
 
     @FXML
     private void initialize() {
-        anchorPane.prefWidthProperty().addListener((ov, oldValue, newValue) -> canvas.setWidth(newValue.doubleValue()));
-        anchorPane.prefHeightProperty().addListener((ov, oldValue, newValue) -> canvas.setHeight(newValue.doubleValue()));
+        canvasPane.prefWidthProperty().addListener((ov, oldValue, newValue) -> canvas.setWidth(newValue.doubleValue()));
+        canvasPane.prefHeightProperty().addListener((ov, oldValue, newValue) -> canvas.setHeight(newValue.doubleValue()));
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.015), event -> {
             double width = canvas.getWidth();
@@ -73,6 +121,22 @@ public class GuiController {
 
         Path fileName = Path.of(file.getAbsolutePath());
 
+        //Вот тут пример как добавлять список кнопок под каждую модель
+        Label modelNameLabel = new Label("Модель: " + modelCounter);
+        modelNameLabel.setStyle("-fx-text-fill: white;");
+        Button deleteButton = new Button("Удалить");
+        Button addTextureButton = new Button("Добавить текстуру ");
+        Button removeTextureButton = new Button("Удалить текстуру ");
+
+        deleteButton.setOnAction(event -> {
+            modelsContainer.getChildren().remove(deleteButton.getParent());
+        });
+
+        HBox modelBox = new HBox(5, modelNameLabel, deleteButton, addTextureButton, removeTextureButton);
+        modelsContainer.getChildren().add(modelBox);
+
+        modelCounter++;
+
         try {
             String fileContent = Files.readString(fileName);
             mesh = ObjReader.read(fileContent);
@@ -94,12 +158,12 @@ public class GuiController {
 
     @FXML
     public void handleCameraLeft(ActionEvent actionEvent) {
-        camera.movePosition(new Vector3f(TRANSLATION, 0, 0));
+        camera.movePosition(new Vector3f(-TRANSLATION, 0, 0));
     }
 
     @FXML
     public void handleCameraRight(ActionEvent actionEvent) {
-        camera.movePosition(new Vector3f(-TRANSLATION, 0, 0));
+        camera.movePosition(new Vector3f(TRANSLATION, 0, 0));
     }
 
     @FXML
