@@ -43,7 +43,6 @@ public class GuiController {
             1.0F, 1, 0.01F, 100);
 
     private Timeline timeline;
-
     @FXML
     private void initialize() {
         anchorPane.prefWidthProperty().addListener((ov, oldValue, newValue) -> canvas.setWidth(newValue.doubleValue()));
@@ -66,6 +65,24 @@ public class GuiController {
 
         timeline.getKeyFrames().add(frame);
         timeline.play();
+
+
+        canvas.setOnKeyPressed(keyEvent -> {
+            boolean isCtrlPressed = keyEvent.isControlDown();
+            String direction = switch (keyEvent.getCode()) {
+                case W -> "forward";
+                case S -> "backward";
+                case A -> "left";
+                case D -> "right";
+                case Q -> "up";
+                case E -> "down";
+                default -> null;
+            };
+
+            if (direction != null) {
+                moveCamera(direction, isCtrlPressed);
+            }
+        });
     }
 
     @FXML
@@ -90,90 +107,6 @@ public class GuiController {
         }
     }
 
-//    @FXML
-//    public void handleCameraForward(ActionEvent actionEvent) {
-//        camera.movePosition(new Vector3f(0, 0, -TRANSLATION));
-//    }
-//
-//    @FXML
-//    public void handleCameraBackward(ActionEvent actionEvent) {
-//        camera.movePosition(new Vector3f(0, 0, TRANSLATION));
-//    }
-
-//    @FXML
-//    public void handleCameraLeft(ActionEvent actionEvent) {
-//        camera.movePosition(new Vector3f(TRANSLATION, 0, 0));
-//        camera.moveTarget(new Vector3f(TRANSLATION, 0, 0));
-//    }
-//
-//    @FXML
-//    public void handleCameraRight(ActionEvent actionEvent) {
-//        camera.movePosition(new Vector3f(-TRANSLATION, 0, 0));
-//        camera.moveTarget(new Vector3f(-TRANSLATION, 0, 0));
-//    }
-//
-//    @FXML
-//    public void handleCameraUp(ActionEvent actionEvent) {
-//        //camera.movePosition(new Vector3f(0, TRANSLATION, 0));
-//        //camera.moveTarget(new Vector3f(0, TRANSLATION, 0));
-//        camera.movePosition(new Vector3f(0, 0, -TRANSLATION));
-//        camera.moveTarget(new Vector3f(0, 0, -TRANSLATION));
-//    }
-//
-//    @FXML
-//    public void handleCameraDown(ActionEvent actionEvent) {
-//        //camera.movePosition(new Vector3f(0, -TRANSLATION, 0));
-//        //camera.moveTarget(new Vector3f(0, -TRANSLATION, 0));
-//        camera.movePosition(new Vector3f(0, 0, TRANSLATION));
-//        camera.moveTarget(new Vector3f(0, 0, TRANSLATION));
-//    }
-
-    @FXML
-    public void handleCameraUp(ActionEvent actionEvent) {
-        Vector3f direction = subtract(camera.getTarget(), camera.getPosition());
-        direction.normalize();
-        direction.multiply(TRANSLATION);
-        camera.movePosition(direction);
-        camera.moveTarget(direction);
-    }
-
-    @FXML
-    public void handleCameraDown(ActionEvent actionEvent) {
-        Vector3f direction = subtract(camera.getTarget(), camera.getPosition());
-        direction.normalize();
-        direction.multiply(-TRANSLATION);
-        camera.movePosition(direction);
-        camera.moveTarget(direction);
-    }
-
-    @FXML
-    public void handleCameraLeft(ActionEvent actionEvent) {
-        Vector3f direction = subtract(camera.getTarget(), camera.getPosition());
-        direction.normalize();
-        Vector3f up = new Vector3f(0, 1, 0);
-        Vector3f right = vectorProduct(direction, up);
-        right.normalize();
-        right.multiply(TRANSLATION);
-        camera.movePosition(right);
-        camera.moveTarget(right);
-    }
-
-    @FXML
-    public void handleCameraRight(ActionEvent actionEvent) {
-        Vector3f direction = subtract(camera.getTarget(), camera.getPosition());
-        direction.normalize();
-        Vector3f up = new Vector3f(0, 1, 0);
-        Vector3f right = vectorProduct(direction, up);
-        right.normalize();
-        right.multiply(-TRANSLATION);
-        camera.movePosition(right);
-        camera.moveTarget(right);
-    }
-
-
-
-
-
     @FXML
     public void handleCameraRotateUp(ActionEvent actionEvent) {
         camera.rotateAroundTarget(-ROTATION, 0);
@@ -193,4 +126,90 @@ public class GuiController {
     public void handleCameraRotateRight(ActionEvent actionEvent) {
         camera.rotateAroundTarget(0, ROTATION);
     }
+
+    @FXML
+    public void handleCameraForward(ActionEvent actionEvent) {
+        moveCamera("forward", false);
+    }
+
+    @FXML
+    public void handleCameraBackward(ActionEvent actionEvent) {
+        moveCamera("backward", false);
+    }
+
+    @FXML
+    public void handleCameraLeft(ActionEvent actionEvent) {
+        moveCamera("left", false);
+    }
+
+    @FXML
+    public void handleCameraRight(ActionEvent actionEvent) {
+        moveCamera("right", false);
+    }
+
+    @FXML
+    public void handleCameraUp(ActionEvent actionEvent) {
+        moveCamera("up", false);
+    }
+
+    @FXML
+    public void handleCameraDown(ActionEvent actionEvent) {
+        moveCamera("down", false);
+    }
+
+    private void moveCamera(String direction, boolean isCtrlPressed) {
+        Vector3f moveVector = new Vector3f();
+
+        switch (direction) {
+            case "forward" -> {
+                Vector3f forward = subtract(camera.getTarget(), camera.getPosition());
+                forward.normalize();
+                forward.multiply(TRANSLATION);
+                moveVector = forward;
+            }
+            case "backward" -> {
+                Vector3f backward = subtract(camera.getPosition(), camera.getTarget());
+                backward.normalize();
+                backward.multiply(TRANSLATION);
+                moveVector = backward;
+            }
+            case "left" -> {
+                Vector3f forward = subtract(camera.getTarget(), camera.getPosition());
+                forward.normalize();
+                Vector3f up = new Vector3f(0, 1, 0);
+                Vector3f left = vectorProduct(up, forward);
+                left.normalize();
+                left.multiply(-TRANSLATION);
+                moveVector = left;
+            }
+            case "right" -> {
+                Vector3f forward = subtract(camera.getTarget(), camera.getPosition());
+                forward.normalize();
+                Vector3f up = new Vector3f(0, 1, 0);
+                Vector3f right = vectorProduct(up, forward);
+                right.normalize();
+                right.multiply(TRANSLATION);
+                moveVector = right;
+            }
+            case "up" -> {
+                Vector3f up = new Vector3f(0, 1, 0);
+                up.multiply(TRANSLATION);
+                moveVector = up;
+            }
+            case "down" -> {
+                Vector3f down = new Vector3f(0, 1, 0);
+                down.multiply(-TRANSLATION);
+                moveVector = down;
+            }
+        }
+
+        // Двигаем камеру
+        camera.movePosition(moveVector);
+
+        // Если Ctrl не зажат, двигаем также цель
+        if (!isCtrlPressed) {
+            camera.moveTarget(moveVector);
+        }
+    }
+
 }
