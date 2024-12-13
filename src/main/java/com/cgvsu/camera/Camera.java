@@ -5,18 +5,47 @@ import com.cgvsu.math.matrices.Matrix4f;
 import com.cgvsu.math.vectors.Vector3f;
 import com.cgvsu.render_engine.GraphicConveyor;
 import lombok.Data;
+import lombok.Getter;
+
 import static com.cgvsu.math.vectors.Vector3f.add;
 import static com.cgvsu.math.vectors.Vector3f.subtract;
 
 @Data
 public class Camera {
 
+    @Getter
     private Vector3f position;
     private Vector3f target;
     private float fov;
     private float aspectRatio;
     private float nearPlane;
     private float farPlane;
+
+
+
+    public void setPosition(Vector3f position) {
+        this.position = position;
+    }
+
+    public void setTarget(Vector3f target) {
+        this.target = target;
+    }
+
+    public void setFov(float fov) {
+        this.fov = fov;
+    }
+
+    public void setAspectRatio(float aspectRatio) {
+        this.aspectRatio = aspectRatio;
+    }
+
+    public void setNearPlane(float nearPlane) {
+        this.nearPlane = nearPlane;
+    }
+
+    public void setFarPlane(float farPlane) {
+        this.farPlane = farPlane;
+    }
 
     public Camera(
             final Vector3f position,

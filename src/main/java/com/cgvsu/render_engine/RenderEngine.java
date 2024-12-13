@@ -8,6 +8,7 @@ import com.cgvsu.math.vectors.Vector4f;
 import javafx.scene.canvas.GraphicsContext;
 import com.cgvsu.model.Model;
 import com.cgvsu.camera.Camera;
+import javafx.scene.paint.Color;
 import static com.cgvsu.math.matrices.Matrix4f.multiply;
 import static com.cgvsu.render_engine.GraphicConveyor.*;
 
@@ -41,6 +42,7 @@ public class RenderEngine {
             }
 
             for (int vertexInPolygonInd = 1; vertexInPolygonInd < nVerticesInPolygon; ++vertexInPolygonInd) {
+                graphicsContext.setStroke(Color.web("#dcdfd6"));
                 graphicsContext.strokeLine(
                         resultPoints.get(vertexInPolygonInd - 1).getX(),
                         resultPoints.get(vertexInPolygonInd - 1).getY(),

@@ -1,89 +1,437 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.MenuBar?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchorPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.cgvsu.GuiController">
-    <MenuBar>
-        <Menu mnemonicParsing="false" text="File">
-            <MenuItem mnemonicParsing="false" onAction="#onOpenModelMenuItemClick" text="Load Model">
-            <accelerator>
-                <KeyCodeCombination alt="UP" control="DOWN" meta="UP" shift="UP" shortcut="UP" code="F"/>
-            </accelerator>
-            </MenuItem>
-        </Menu>
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: #212121;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cgvsu.GuiController">
+   <HBox alignment="TOP_CENTER" prefHeight="864.0" prefWidth="1712.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <children>
+         <Pane fx:id="canvasPane" prefHeight="800.0" prefWidth="1537.0" HBox.hgrow="SOMETIMES">
+            <children>
 
-
-
-
-
-
-
-
-
-        <Menu mnemonicParsing="false" text="Camera Options">
-            <MenuItem mnemonicParsing="false" onAction="#handleCameraUp" text="Up">
-                <accelerator>
-                        <KeyCodeCombination alt="UP" control="DOWN" meta="UP" shift="UP" shortcut="UP" code="W"/>
-                </accelerator>
-            </MenuItem>
-            <MenuItem mnemonicParsing="false" onAction="#handleCameraDown" text="Down">
-                <accelerator>
-                    <KeyCodeCombination alt="UP" control="DOWN" meta="UP" shift="UP" shortcut="UP" code="S"/>
-                </accelerator>
-            </MenuItem>
-            <MenuItem mnemonicParsing="false" onAction="#handleCameraLeft" text="Left">
-                <accelerator>
-                    <KeyCodeCombination alt="UP" control="DOWN" meta="UP" shift="UP" shortcut="UP" code="A"/>
-                </accelerator>
-            </MenuItem>
-            <MenuItem mnemonicParsing="false" onAction="#handleCameraRight" text="Right">
-                <accelerator>
-                    <KeyCodeCombination alt="UP" control="DOWN" meta="UP" shift="UP" shortcut="UP" code="D"/>
-                </accelerator>
-            </MenuItem>
-            <MenuItem mnemonicParsing="false" onAction="#handleCameraForward" text="Forward">
-                <accelerator>
-                    <KeyCodeCombination alt="UP" control="DOWN" meta="UP" shift="UP" shortcut="UP" code="Q"/>
-                </accelerator>
-            </MenuItem>
-            <MenuItem mnemonicParsing="false" onAction="#handleCameraBackward" text="Backward">
-            <accelerator>
-                <KeyCodeCombination alt="UP" control="DOWN" meta="UP" shift="UP" shortcut="UP" code="E"/>
-            </accelerator>
-            </MenuItem>
-
-
-
+               <Canvas fx:id="canvas" height="1080.0" layoutY="-3.0" width="1265.0" />
+               <MenuBar prefHeight="0.0" prefWidth="185.0" style="-fx-background-color: #212121;">
+                  <Menu mnemonicParsing="false" style="-fx-background-color: #747b7c; -fx-background-radius: 5;" text="File">
+                     <MenuItem mnemonicParsing="false" onAction="#onOpenModelMenuItemClick" text="Load Model">
+                        <accelerator>
+                           <KeyCodeCombination alt="UP" code="F" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                        </accelerator>
+                     </MenuItem>
+                  </Menu>
+                  <Menu mnemonicParsing="false" style="-fx-background-color: #747b7c; -fx-background-radius: 5;" text="Camera Options">
+                     <MenuItem mnemonicParsing="false" onAction="#handleCameraForward" text="Forward">
+                        <accelerator>
+                           <KeyCodeCombination alt="UP" code="I" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                        </accelerator>
+                     </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#handleCameraDown" text="Down">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" control="DOWN" meta="UP" shift="UP" shortcut="UP" code="S"/>
+                            </accelerator>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#handleCameraLeft" text="Left">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" control="DOWN" meta="UP" shift="UP" shortcut="UP" code="A"/>
+                            </accelerator>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#handleCameraRight" text="Right">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" control="DOWN" meta="UP" shift="UP" shortcut="UP" code="D"/>
+                            </accelerator>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#handleCameraForward" text="Forward">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" control="DOWN" meta="UP" shift="UP" shortcut="UP" code="Q"/>
+                            </accelerator>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#handleCameraBackward" text="Backward">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" control="DOWN" meta="UP" shift="UP" shortcut="UP" code="E"/>
+                            </accelerator>
+                        </MenuItem>
 
 
 
-            <MenuItem mnemonicParsing="false" onAction="#handleCameraRotateUp" text="Up">
-                <accelerator>
-                    <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="UP"/>
-                </accelerator>
-            </MenuItem>
-            <MenuItem mnemonicParsing="false" onAction="#handleCameraRotateDown" text="Down">
-                <accelerator>
-                    <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="DOWN"/>
-                </accelerator>
-            </MenuItem>
-            <MenuItem mnemonicParsing="false" onAction="#handleCameraRotateLeft" text="Left">
-                <accelerator>
-                    <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="LEFT"/>
-                </accelerator>
-            </MenuItem>
-            <MenuItem mnemonicParsing="false" onAction="#handleCameraRotateRight" text="Right">
-                <accelerator>
-                    <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="RIGHT"/>
-                </accelerator>
-            </MenuItem>
-        </Menu>
-    </MenuBar>
 
-    <Canvas fx:id="canvas" width="1600" height="870" AnchorPane.topAnchor="30.0" focusTraversable="true"/>
+
+
+                        <MenuItem mnemonicParsing="false" onAction="#handleCameraRotateUp" text="Up">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="UP"/>
+                            </accelerator>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#handleCameraRotateDown" text="Down">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="DOWN"/>
+                            </accelerator>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#handleCameraRotateLeft" text="Left">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="LEFT"/>
+                            </accelerator>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#handleCameraRotateRight" text="Right">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="RIGHT"/>
+                            </accelerator>
+                        </MenuItem>
+                    </Menu>
+                  <opaqueInsets>
+                     <Insets />
+                  </opaqueInsets>
+                  <cursor>
+                     <Cursor fx:constant="DEFAULT" />
+                  </cursor>
+                </MenuBar>
+            </children>
+         </Pane>
+         <VBox alignment="TOP_CENTER" prefHeight="1080.0" prefWidth="928.0" style="-fx-background-color: #212121; -fx-border-width: 2; -fx-border-color: black;" HBox.hgrow="SOMETIMES">
+            <children>
+               <ScrollPane hbarPolicy="NEVER" pannable="true" prefHeight="200.0" prefWidth="372.0" style="-fx-background-color: #212121;" stylesheets="@main.css" vbarPolicy="NEVER" VBox.vgrow="SOMETIMES">
+                  <content>
+                     <AnchorPane prefHeight="796.0" prefWidth="375.0" style="-fx-background-color: #212121;">
+                        <children>
+                           <Text fill="SILVER" layoutX="108.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Объекты" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                              <font>
+                                 <Font size="16.0" />
+                              </font>
+                           </Text>
+                           <TitledPane ellipsisString="0" layoutY="44.0" prefHeight="177.0" prefWidth="389.0" stylesheets="@main.css" text="Модели" textFill="SILVER" underline="true" wrapText="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-14.0" AnchorPane.topAnchor="35.0">
+                              <effect>
+                                 <Blend />
+                              </effect>
+                              <content>
+                                 <VBox fx:id="modelsContainer" prefHeight="200.0" prefWidth="100.0" spacing="5.0" />
+                              </content>
+                           </TitledPane>
+                           <TitledPane ellipsisString="0" layoutY="212.0" prefHeight="177.0" prefWidth="332.0" stylesheets="@main.css" text="Камеры" textFill="SILVER" underline="true" wrapText="true">
+                              <effect>
+                                 <Blend />
+                              </effect>
+                              <content>
+                                 <VBox fx:id="camerasContainer">
+                                    <children>
+                                       <HBox prefHeight="0.0" prefWidth="310.0" spacing="5.0">
+                                          <children>
+                                             <Button fx:id="addCameraButton" mnemonicParsing="false" onAction="#addCamera" styleClass="button-add-camera" stylesheets="@main.css" text="Добавить камеру" />
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </VBox>
+                              </content>
+                           </TitledPane>
+                           <Text fill="SILVER" layoutX="10.0" layoutY="404.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Позиция">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Text>
+                           <VBox layoutX="10.0" layoutY="408.0" onKeyPressed="#positionChanged" prefHeight="97.0" prefWidth="165.0" spacing="10.0">
+                              <children>
+                                 <HBox prefHeight="0.0" prefWidth="165.0" spacing="5.0">
+                                    <children>
+                                       <Text fill="SILVER" strokeType="OUTSIDE" strokeWidth="0.0" text="X:">
+                                          <font>
+                                             <Font size="15.0" />
+                                          </font>
+                                          <HBox.margin>
+                                             <Insets top="2.0" />
+                                          </HBox.margin>
+                                       </Text>
+                                       <TextField prefHeight="5.0" prefWidth="147.0" fx:id="xCameraPosition" />
+                                    </children>
+                                 </HBox>
+                                 <HBox prefHeight="0.0" prefWidth="165.0" spacing="5.0">
+                                    <children>
+                                       <Text fill="SILVER" strokeType="OUTSIDE" strokeWidth="0.0" text="Y:">
+                                          <font>
+                                             <Font size="15.0" />
+                                          </font>
+                                          <HBox.margin>
+                                             <Insets top="2.0" />
+                                          </HBox.margin>
+                                       </Text>
+                                       <TextField fx:id="yCameraPosition" prefHeight="3.0" prefWidth="147.0" />
+                                    </children>
+                                 </HBox>
+                                 <HBox prefHeight="0.0" prefWidth="165.0" spacing="5.0">
+                                    <children>
+                                       <Text fill="SILVER" strokeType="OUTSIDE" strokeWidth="0.0" text="Z:">
+                                          <font>
+                                             <Font size="15.0" />
+                                          </font>
+                                          <HBox.margin>
+                                             <Insets top="2.0" />
+                                          </HBox.margin>
+                                       </Text>
+                                       <TextField fx:id="zCameraPosition" prefHeight="25.0" prefWidth="192.0" />
+                                    </children>
+                                 </HBox>
+                              </children>
+                              <padding>
+                                 <Insets top="7.0" />
+                              </padding>
+                           </VBox>
+                           <Text fill="SILVER" layoutX="192.0" layoutY="404.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Таргет">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Text>
+                           <VBox layoutX="192.0" layoutY="408.0" onKeyPressed="#targetChanged" prefHeight="84.0" prefWidth="165.0" spacing="10.0">
+                              <children>
+                                 <HBox prefHeight="0.0" prefWidth="165.0" spacing="5.0">
+                                    <children>
+                                       <Text fill="SILVER" strokeType="OUTSIDE" strokeWidth="0.0" text="X:">
+                                          <font>
+                                             <Font size="15.0" />
+                                          </font>
+                                          <HBox.margin>
+                                             <Insets top="2.0" />
+                                          </HBox.margin>
+                                       </Text>
+                                       <TextField prefHeight="5.0" prefWidth="147.0" fx:id="xTargetPosition" />
+                                    </children>
+                                 </HBox>
+                                 <HBox prefHeight="0.0" prefWidth="165.0" spacing="5.0">
+                                    <children>
+                                       <Text fill="SILVER" strokeType="OUTSIDE" strokeWidth="0.0" text="Y:">
+                                          <font>
+                                             <Font size="15.0" />
+                                          </font>
+                                          <HBox.margin>
+                                             <Insets top="2.0" />
+                                          </HBox.margin>
+                                       </Text>
+                                       <TextField fx:id="yTargetPosition" prefHeight="3.0" prefWidth="147.0" />
+                                    </children>
+                                 </HBox>
+                                 <HBox prefHeight="0.0" prefWidth="165.0" spacing="5.0">
+                                    <children>
+                                       <Text fill="SILVER" strokeType="OUTSIDE" strokeWidth="0.0" text="Z:">
+                                          <font>
+                                             <Font size="15.0" />
+                                          </font>
+                                          <HBox.margin>
+                                             <Insets top="2.0" />
+                                          </HBox.margin>
+                                       </Text>
+                                       <TextField fx:id="zTargetPosition" prefHeight="25.0" prefWidth="192.0" />
+                                    </children>
+                                 </HBox>
+                              </children>
+                              <padding>
+                                 <Insets top="7.0" />
+                              </padding>
+                           </VBox>
+                           <TitledPane ellipsisString="0" layoutX="10.0" layoutY="510.0" prefHeight="177.0" prefWidth="365.0" stylesheets="@main.css" text="Модели освещения" textFill="SILVER" underline="true" wrapText="true">
+                              <effect>
+                                 <Blend />
+                              </effect>
+                              <content>
+                                 <HBox prefHeight="100.0" prefWidth="200.0">
+                                    <children>
+                                       <Button fx:id="addLightingModel" mnemonicParsing="false" styleClass="button-add-camera" stylesheets="@main.css" text="Добавить модель освещения" />
+                                    </children>
+                                 </HBox>
+                              </content>
+                           </TitledPane>
+                        </children>
+                     </AnchorPane>
+                  </content></ScrollPane>
+               <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #212121; -fx-border-width: 2 0 0 0; -fx-border-color: black black black black;" stylesheets="@main.css" vbarPolicy="NEVER" VBox.vgrow="SOMETIMES">
+                  <content>
+                     <AnchorPane prefHeight="458.0" prefWidth="377.0">
+                        <children>
+                           <Text fill="SILVER" layoutX="14.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Афинные преобразования" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                              <font>
+                                 <Font size="16.0" />
+                              </font>
+                           </Text>
+                           <Text fill="SILVER" layoutX="14.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Масштаб" wrappingWidth="74.3310546875">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Text>
+                           <VBox layoutX="14.0" layoutY="57.0" prefHeight="97.0" prefWidth="165.0" spacing="10.0">
+                              <children>
+                                 <HBox prefHeight="0.0" prefWidth="165.0" spacing="5.0">
+                                    <children>
+                                       <Text fill="SILVER" strokeType="OUTSIDE" strokeWidth="0.0" text="X:">
+                                          <font>
+                                             <Font size="15.0" />
+                                          </font>
+                                          <HBox.margin>
+                                             <Insets top="2.0" />
+                                          </HBox.margin>
+                                       </Text>
+                                       <TextField prefHeight="5.0" prefWidth="147.0" fx:id="xScale" />
+                                    </children>
+                                 </HBox>
+                                 <HBox prefHeight="0.0" prefWidth="165.0" spacing="5.0">
+                                    <children>
+                                       <Text fill="SILVER" strokeType="OUTSIDE" strokeWidth="0.0" text="Y:">
+                                          <font>
+                                             <Font size="15.0" />
+                                          </font>
+                                          <HBox.margin>
+                                             <Insets top="2.0" />
+                                          </HBox.margin>
+                                       </Text>
+                                       <TextField fx:id="yScale" prefHeight="3.0" prefWidth="147.0" />
+                                    </children>
+                                 </HBox>
+                                 <HBox prefHeight="0.0" prefWidth="165.0" spacing="5.0">
+                                    <children>
+                                       <Text fill="SILVER" strokeType="OUTSIDE" strokeWidth="0.0" text="Z:">
+                                          <font>
+                                             <Font size="15.0" />
+                                          </font>
+                                          <HBox.margin>
+                                             <Insets top="2.0" />
+                                          </HBox.margin>
+                                       </Text>
+                                       <TextField fx:id="zScale" prefHeight="25.0" prefWidth="192.0" />
+                                    </children>
+                                 </HBox>
+                              </children>
+                              <padding>
+                                 <Insets top="7.0" />
+                              </padding>
+                           </VBox>
+                           <Text fill="SILVER" layoutX="14.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Вращение" wrappingWidth="74.3310546875">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Text>
+                           <VBox layoutX="14.0" layoutY="193.0" prefHeight="97.0" prefWidth="165.0" spacing="10.0">
+                              <children>
+                                 <HBox prefHeight="0.0" prefWidth="165.0" spacing="5.0">
+                                    <children>
+                                       <Text fill="SILVER" strokeType="OUTSIDE" strokeWidth="0.0" text="X:">
+                                          <font>
+                                             <Font size="15.0" />
+                                          </font>
+                                          <HBox.margin>
+                                             <Insets top="2.0" />
+                                          </HBox.margin>
+                                       </Text>
+                                       <TextField prefHeight="5.0" prefWidth="147.0" fx:id="xRotation" />
+                                    </children>
+                                 </HBox>
+                                 <HBox prefHeight="0.0" prefWidth="165.0" spacing="5.0">
+                                    <children>
+                                       <Text fill="SILVER" strokeType="OUTSIDE" strokeWidth="0.0" text="Y:">
+                                          <font>
+                                             <Font size="15.0" />
+                                          </font>
+                                          <HBox.margin>
+                                             <Insets top="2.0" />
+                                          </HBox.margin>
+                                       </Text>
+                                       <TextField fx:id="yRotation" prefHeight="3.0" prefWidth="147.0" />
+                                    </children>
+                                 </HBox>
+                                 <HBox prefHeight="0.0" prefWidth="165.0" spacing="5.0">
+                                    <children>
+                                       <Text fill="SILVER" strokeType="OUTSIDE" strokeWidth="0.0" text="Z:">
+                                          <font>
+                                             <Font size="15.0" />
+                                          </font>
+                                          <HBox.margin>
+                                             <Insets top="2.0" />
+                                          </HBox.margin>
+                                       </Text>
+                                       <TextField fx:id="zRotation" prefHeight="25.0" prefWidth="192.0" />
+                                    </children>
+                                 </HBox>
+                              </children>
+                              <padding>
+                                 <Insets top="7.0" />
+                              </padding>
+                           </VBox>
+                           <Text fill="SILVER" layoutX="14.0" layoutY="321.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Позиция" wrappingWidth="74.3310546875">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Text>
+                           <VBox layoutX="14.0" layoutY="326.0" prefHeight="97.0" prefWidth="165.0" spacing="10.0">
+                              <children>
+                                 <HBox prefHeight="0.0" prefWidth="165.0" spacing="5.0">
+                                    <children>
+                                       <Text fill="SILVER" strokeType="OUTSIDE" strokeWidth="0.0" text="X:">
+                                          <font>
+                                             <Font size="15.0" />
+                                          </font>
+                                          <HBox.margin>
+                                             <Insets top="2.0" />
+                                          </HBox.margin>
+                                       </Text>
+                                       <TextField prefHeight="5.0" prefWidth="147.0" fx:id="xTrans" />
+                                    </children>
+                                 </HBox>
+                                 <HBox prefHeight="0.0" prefWidth="165.0" spacing="5.0">
+                                    <children>
+                                       <Text fill="SILVER" strokeType="OUTSIDE" strokeWidth="0.0" text="Y:">
+                                          <font>
+                                             <Font size="15.0" />
+                                          </font>
+                                          <HBox.margin>
+                                             <Insets top="2.0" />
+                                          </HBox.margin>
+                                       </Text>
+                                       <TextField fx:id="yTrans" prefHeight="3.0" prefWidth="147.0" />
+                                    </children>
+                                 </HBox>
+                                 <HBox prefHeight="0.0" prefWidth="165.0" spacing="5.0">
+                                    <children>
+                                       <Text fill="SILVER" strokeType="OUTSIDE" strokeWidth="0.0" text="Z:">
+                                          <font>
+                                             <Font size="15.0" />
+                                          </font>
+                                          <HBox.margin>
+                                             <Insets top="2.0" />
+                                          </HBox.margin>
+                                       </Text>
+                                       <TextField fx:id="zTrans" prefHeight="25.0" prefWidth="192.0" />
+                                    </children>
+                                 </HBox>
+                              </children>
+                              <padding>
+                                 <Insets top="7.0" />
+                              </padding>
+                           </VBox>
+                           <VBox layoutX="189.0" layoutY="37.0" prefHeight="200.0" prefWidth="65.0" spacing="9.0">
+                              <children>
+                                 <Text fill="SILVER" strokeType="OUTSIDE" strokeWidth="0.0" text="Дополнительные функции">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Text>
+                                 <Button fx:id="calcNormals" mnemonicParsing="false" text="Перерасчет нормалей" />
+                                 <Button fx:id="triangulationButton" mnemonicParsing="false" onAction="#triangulate" text="Триангуляция" />
+                                 <Button fx:id="affineTransform" mnemonicParsing="false" text="Выполнить преобразования" />
+                              </children>
+                           </VBox>
+                        </children>
+                     </AnchorPane>
+                  </content></ScrollPane>
+            </children>
+         </VBox>
+      </children>
+   </HBox>
 </AnchorPane>
