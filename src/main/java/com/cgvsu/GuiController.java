@@ -1,7 +1,9 @@
 package com.cgvsu;
 
+import com.cgvsu.camera.CameraController;
 import com.cgvsu.math.vectors.Vector3f;
 import com.cgvsu.render_engine.RenderEngine;
+import com.cgvsu.camera.Camera;
 import com.cgvsu.render_engine.Triangulation;
 import javafx.fxml.FXML;
 import javafx.animation.Animation;
@@ -20,6 +22,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.io.IOException;
@@ -32,11 +35,16 @@ import javafx.scene.layout.VBox;
 
 import com.cgvsu.model.Model;
 import com.cgvsu.objreader.ObjReader;
-import com.cgvsu.render_engine.Camera;
+
 
 public class GuiController {
 
     final private float TRANSLATION = 0.5F;
+    final private float ROTATION = 0.01F;
+    final private float ZOOM = 0.3F;
+    private double lastMouseX;
+    private double lastMouseY;
+    private boolean isMousePressed;
 
     @FXML
     public Pane canvasPane;
@@ -90,13 +98,12 @@ public class GuiController {
     private int cameraCounter = 2;
     private int globalModelIndex = 0;
     private int globalCameraIndex = 1;
-
     private int currCameraIndex = 0;
 
     private final Model mesh = new Model();
 
     private final Camera nullCamera = new Camera(
-            new Vector3f(0, 0, 50),
+            new Vector3f(0, 0, 20),
             new Vector3f(0, 0, 0),
             1.0F, 1, 0.01F, 100);
 
@@ -104,6 +111,7 @@ public class GuiController {
             new Vector3f(0, 0, 50),
             new Vector3f(0, 0, 0),
             1.0F, 1, 0.01F, 100);
+    private CameraController cameraController = new CameraController(currCamera, TRANSLATION, ROTATION, ZOOM);
 
     private ArrayList<Camera> cameraArrayList = new ArrayList<>();
     private ArrayList<Model> modelArrayList = new ArrayList<>();
@@ -120,21 +128,16 @@ public class GuiController {
         Button moveToButton = new Button("Переместиться");
 
 
-
-
         moveToButton.setOnAction(event -> {
-           currCamera = cameraArrayList.get(0);
+            currCamera = cameraArrayList.get(0);
         });
 
         HBox modelBox = new HBox(5, modelNameLabel, moveToButton);
         camerasContainer.getChildren().add(modelBox);
 
 
-
-
         canvasPane.prefWidthProperty().addListener((ov, oldValue, newValue) -> canvas.setWidth(newValue.doubleValue()));
         canvasPane.prefHeightProperty().addListener((ov, oldValue, newValue) -> canvas.setHeight(newValue.doubleValue()));
-
 
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.015), event -> {
@@ -173,6 +176,44 @@ public class GuiController {
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
+
+
+        canvas.setOnKeyPressed(keyEvent -> {
+            boolean isCtrlPressed = keyEvent.isControlDown();
+            String direction = switch (keyEvent.getCode()) {
+                case W -> "forward";
+                case S -> "backward";
+                case A -> "left";
+                case D -> "right";
+                case Q -> "up";
+                case E -> "down";
+                default -> null;
+            };
+
+            if (direction != null) {
+                cameraController.moveCamera(direction, isCtrlPressed);
+            }
+        });
+
+        canvas.setOnMousePressed(mouseEvent -> {
+            canvas.requestFocus();
+            lastMouseX = mouseEvent.getX();
+            lastMouseY = mouseEvent.getY();
+            isMousePressed = true;
+        });
+
+        canvas.setOnMouseDragged(mouseEvent -> {
+            if (isMousePressed) {
+                double deltaX = mouseEvent.getX() - lastMouseX;
+                double deltaY = mouseEvent.getY() - lastMouseY;
+                cameraController.handleMouseDrag(deltaX, deltaY);
+                lastMouseX = mouseEvent.getX();
+                lastMouseY = mouseEvent.getY();
+            }
+        });
+
+        canvas.setOnMouseReleased(mouseEvent -> isMousePressed = false);
+        canvas.setOnScroll(scrollEvent -> cameraController.handleMouseScroll(scrollEvent.getDeltaY()));
     }
 
     public void positionChanged(KeyEvent keyEvent) {
@@ -232,9 +273,7 @@ public class GuiController {
         modelsContainer.getChildren().add(modelBox);
 
 
-
         modelCounter++;
-
 
 
         try {
@@ -248,33 +287,53 @@ public class GuiController {
     }
 
     @FXML
+    public void handleCameraRotateUp(ActionEvent actionEvent) {
+        currCamera.rotateAroundTarget(-ROTATION, 0);
+    }
+
+    @FXML
+    public void handleCameraRotateDown(ActionEvent actionEvent) {
+        currCamera.rotateAroundTarget(ROTATION, 0);
+    }
+
+    @FXML
+    public void handleCameraRotateLeft(ActionEvent actionEvent) {
+        currCamera.rotateAroundTarget(0, -ROTATION);
+    }
+
+    @FXML
+    public void handleCameraRotateRight(ActionEvent actionEvent) {
+        currCamera.rotateAroundTarget(0, ROTATION);
+    }
+
+    @FXML
     public void handleCameraForward(ActionEvent actionEvent) {
-        currCamera.movePosition(new Vector3f(0, 0, -TRANSLATION));
+        cameraController.moveCamera("forward", false);
     }
 
     @FXML
     public void handleCameraBackward(ActionEvent actionEvent) {
-        currCamera.movePosition(new Vector3f(0, 0, TRANSLATION));
+        cameraController.moveCamera("backward", false);
     }
 
     @FXML
     public void handleCameraLeft(ActionEvent actionEvent) {
-        currCamera.movePosition(new Vector3f(-TRANSLATION, 0, 0));
+        cameraController.moveCamera("left", false);
     }
 
     @FXML
     public void handleCameraRight(ActionEvent actionEvent) {
-        currCamera.movePosition(new Vector3f(TRANSLATION, 0, 0));
+        cameraController.moveCamera("right", false);
     }
 
     @FXML
     public void handleCameraUp(ActionEvent actionEvent) {
-        currCamera.moveTarget(new Vector3f(0, TRANSLATION, 0));
+        cameraController.moveCamera("up", false);
     }
 
     @FXML
     public void handleCameraDown(ActionEvent actionEvent) {
-        currCamera.moveTarget(new Vector3f(0, -TRANSLATION, 0));
+        cameraController.moveCamera("down", false);
     }
 
     public void triangulate(ActionEvent actionEvent) {
@@ -297,7 +356,6 @@ public class GuiController {
         });
 
 
-
         deleteButton.setOnAction(event -> {
             camerasContainer.getChildren().remove(deleteButton.getParent());
             cameraCounter--;
@@ -311,7 +369,6 @@ public class GuiController {
         camerasContainer.getChildren().add(cameraBox);
 
 
-
         cameraCounter++;
 
         Camera newCam = new Camera(
@@ -320,8 +377,7 @@ public class GuiController {
                 1.0F, 1, 0.01F, 100);
 
 
-
         cameraArrayList.add(newCam);
-
     }
+
 }

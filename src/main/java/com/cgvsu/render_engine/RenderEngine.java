@@ -7,8 +7,8 @@ import com.cgvsu.math.vectors.Vector2f;
 import com.cgvsu.math.vectors.Vector4f;
 import javafx.scene.canvas.GraphicsContext;
 import com.cgvsu.model.Model;
+import com.cgvsu.camera.Camera;
 import javafx.scene.paint.Color;
-
 import static com.cgvsu.math.matrices.Matrix4f.multiply;
 import static com.cgvsu.render_engine.GraphicConveyor.*;
 
@@ -26,7 +26,7 @@ public class RenderEngine {
         Matrix4f viewMatrix = camera.getViewMatrix();
         Matrix4f projectionMatrix = camera.getProjectionMatrix();
         Matrix4f modelViewProjectionMatrix = multiply(multiply(projectionMatrix, viewMatrix), modelMatrix);
-        
+
         final int nPolygons = mesh.polygons.size();
         for (int polygonInd = 0; polygonInd < nPolygons; ++polygonInd) {
             final int nVerticesInPolygon = mesh.polygons.get(polygonInd).getVertexIndices().size();

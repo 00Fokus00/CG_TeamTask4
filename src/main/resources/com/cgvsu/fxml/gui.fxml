@@ -24,45 +24,71 @@
       <children>
          <Pane fx:id="canvasPane" prefHeight="800.0" prefWidth="1537.0" HBox.hgrow="SOMETIMES">
             <children>
-            
-                            <Canvas fx:id="canvas" height="1080.0" layoutY="-3.0" width="1265.0" />
-                <MenuBar prefHeight="0.0" prefWidth="185.0" style="-fx-background-color: #212121;">
-                    <Menu mnemonicParsing="false" style="-fx-background-color: #747b7c; -fx-background-radius: 5;" text="File">
-                        <MenuItem mnemonicParsing="false" onAction="#onOpenModelMenuItemClick" text="Load Model">
+
+               <Canvas fx:id="canvas" height="1080.0" layoutY="-3.0" width="1265.0" />
+               <MenuBar prefHeight="0.0" prefWidth="185.0" style="-fx-background-color: #212121;">
+                  <Menu mnemonicParsing="false" style="-fx-background-color: #747b7c; -fx-background-radius: 5;" text="File">
+                     <MenuItem mnemonicParsing="false" onAction="#onOpenModelMenuItemClick" text="Load Model">
                         <accelerator>
-                            <KeyCodeCombination alt="UP" code="F" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                           <KeyCodeCombination alt="UP" code="F" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                         </accelerator>
-                        </MenuItem>
-                    </Menu>
-                    <Menu mnemonicParsing="false" style="-fx-background-color: #747b7c; -fx-background-radius: 5;" text="Camera Options">
-                        <MenuItem mnemonicParsing="false" onAction="#handleCameraForward" text="Forward">
+                     </MenuItem>
+                  </Menu>
+                  <Menu mnemonicParsing="false" style="-fx-background-color: #747b7c; -fx-background-radius: 5;" text="Camera Options">
+                     <MenuItem mnemonicParsing="false" onAction="#handleCameraForward" text="Forward">
+                        <accelerator>
+                           <KeyCodeCombination alt="UP" code="I" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                        </accelerator>
+                     </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#handleCameraDown" text="Down">
                             <accelerator>
-                                <KeyCodeCombination alt="UP" code="I" control="UP" meta="UP" shift="UP" shortcut="UP" />
-                            </accelerator>
-                        </MenuItem>
-                        <MenuItem mnemonicParsing="false" onAction="#handleCameraBackward" text="Backward">
-                            <accelerator>
-                                <KeyCodeCombination alt="UP" code="K" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                                <KeyCodeCombination alt="UP" control="DOWN" meta="UP" shift="UP" shortcut="UP" code="S"/>
                             </accelerator>
                         </MenuItem>
                         <MenuItem mnemonicParsing="false" onAction="#handleCameraLeft" text="Left">
                             <accelerator>
-                                <KeyCodeCombination alt="UP" code="L" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                                <KeyCodeCombination alt="UP" control="DOWN" meta="UP" shift="UP" shortcut="UP" code="A"/>
                             </accelerator>
                         </MenuItem>
                         <MenuItem mnemonicParsing="false" onAction="#handleCameraRight" text="Right">
                             <accelerator>
-                                <KeyCodeCombination alt="UP" code="J" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                                <KeyCodeCombination alt="UP" control="DOWN" meta="UP" shift="UP" shortcut="UP" code="D"/>
                             </accelerator>
                         </MenuItem>
-                        <MenuItem mnemonicParsing="false" onAction="#handleCameraUp" text="Up">
+                        <MenuItem mnemonicParsing="false" onAction="#handleCameraForward" text="Forward">
                             <accelerator>
-                                <KeyCodeCombination alt="UP" code="W" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                                <KeyCodeCombination alt="UP" control="DOWN" meta="UP" shift="UP" shortcut="UP" code="Q"/>
                             </accelerator>
                         </MenuItem>
-                        <MenuItem mnemonicParsing="false" onAction="#handleCameraDown" text="Down">
+                        <MenuItem mnemonicParsing="false" onAction="#handleCameraBackward" text="Backward">
                             <accelerator>
-                                <KeyCodeCombination alt="UP" code="S" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                                <KeyCodeCombination alt="UP" control="DOWN" meta="UP" shift="UP" shortcut="UP" code="E"/>
+                            </accelerator>
+                        </MenuItem>
+
+
+
+
+
+
+                        <MenuItem mnemonicParsing="false" onAction="#handleCameraRotateUp" text="Up">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="UP"/>
+                            </accelerator>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#handleCameraRotateDown" text="Down">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="DOWN"/>
+                            </accelerator>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#handleCameraRotateLeft" text="Left">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="LEFT"/>
+                            </accelerator>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#handleCameraRotateRight" text="Right">
+                            <accelerator>
+                                <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="RIGHT"/>
                             </accelerator>
                         </MenuItem>
                     </Menu>
