@@ -9,8 +9,11 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -47,11 +50,13 @@ public class GuiController {
     public TextField xCameraPosition;
     public TextField yCameraPosition;
     public TextField zCameraPosition;
+    public Vector3f cameraPosition;
 
     //TODO вот в эти поля добавить координаты таргета
     public TextField xTargetPosition;
     public TextField yTargetPosition;
     public TextField zTargetPosition;
+    public Vector3f targetPosition;
 
     //TODO это кнопочка для добавления новых камер, это к уважаемому Win122333)
     public Button addCamera;
@@ -90,16 +95,13 @@ public class GuiController {
 
     private final Model mesh = new Model();
 
-
-
-
     private final Camera nullCamera = new Camera(
-            new Vector3f(0, 0, 100),
+            new Vector3f(0, 0, 50),
             new Vector3f(0, 0, 0),
             1.0F, 1, 0.01F, 100);
 
     private Camera currCamera = new Camera(
-            new Vector3f(0, 0, 100),
+            new Vector3f(0, 0, 50),
             new Vector3f(0, 0, 0),
             1.0F, 1, 0.01F, 100);
 
@@ -142,14 +144,53 @@ public class GuiController {
             canvas.getGraphicsContext2D().clearRect(0, 0, width, height);
             currCamera.setAspectRatio((float) (height / width));
             for (Model model : modelArrayList) {
-                if (model != null) {
+                if (model != null && model.enable) {
                     RenderEngine.render(canvas.getGraphicsContext2D(), currCamera, model, (int) width, (int) height);
                 }
             }
 
+            if (!currCamera.getPosition().equals(cameraPosition)) {
+                cameraPosition = new Vector3f(
+                        currCamera.getPosition().getX(),
+                        currCamera.getPosition().getY(),
+                        currCamera.getPosition().getZ()
+                );
+                xCameraPosition.setText(String.valueOf(cameraPosition.getX()));
+                yCameraPosition.setText(String.valueOf(cameraPosition.getY()));
+                zCameraPosition.setText(String.valueOf(cameraPosition.getZ()));
+            }
+
+            if (!currCamera.getTarget().equals(targetPosition)) {
+                targetPosition = new Vector3f(
+                        currCamera.getTarget().getX(),
+                        currCamera.getTarget().getY(),
+                        currCamera.getTarget().getZ()
+                );
+                xTargetPosition.setText(String.valueOf(targetPosition.getX()));
+                yTargetPosition.setText(String.valueOf(targetPosition.getY()));
+                zTargetPosition.setText(String.valueOf(targetPosition.getZ()));
+            }
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
+    }
+
+    public void positionChanged(KeyEvent keyEvent) {
+        cameraPosition = new Vector3f(
+                Float.parseFloat(xCameraPosition.getText()),
+                Float.parseFloat(yCameraPosition.getText()),
+                Float.parseFloat(zCameraPosition.getText())
+        );
+        currCamera.setPosition(cameraPosition);
+    }
+
+    public void targetChanged(KeyEvent keyEvent) {
+        targetPosition = new Vector3f(
+                Float.parseFloat(xTargetPosition.getText()),
+                Float.parseFloat(yTargetPosition.getText()),
+                Float.parseFloat(zTargetPosition.getText())
+        );
+        currCamera.setTarget(targetPosition);
     }
 
     @FXML
@@ -171,6 +212,8 @@ public class GuiController {
         Button deleteButton = new Button("Удалить");
         Button addTextureButton = new Button("Добавить текстуру ");
         Button removeTextureButton = new Button("Удалить текстуру ");
+        CheckBox enable = new CheckBox();
+        enable.setSelected(true);
 
         int currIndex = globalModelIndex;
         globalModelIndex++;
@@ -181,7 +224,11 @@ public class GuiController {
             modelArrayList.set(currIndex, mesh);
         });
 
-        HBox modelBox = new HBox(5, modelNameLabel, deleteButton, addTextureButton, removeTextureButton);
+        enable.setOnAction(actionEvent -> {
+            modelArrayList.get(currIndex).enable = enable.isSelected();
+        });
+
+        HBox modelBox = new HBox(5, modelNameLabel, deleteButton, addTextureButton, removeTextureButton, enable);
         modelsContainer.getChildren().add(modelBox);
 
 
@@ -268,7 +315,7 @@ public class GuiController {
         cameraCounter++;
 
         Camera newCam = new Camera(
-                new Vector3f(0, 0, 100),
+                new Vector3f(0, 0, 50),
                 new Vector3f(0, 0, 0),
                 1.0F, 1, 0.01F, 100);
 

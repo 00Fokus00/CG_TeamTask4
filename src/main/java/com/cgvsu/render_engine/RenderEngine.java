@@ -42,7 +42,7 @@ public class RenderEngine {
             }
 
             for (int vertexInPolygonInd = 1; vertexInPolygonInd < nVerticesInPolygon; ++vertexInPolygonInd) {
-                graphicsContext.setStroke(Color.web("#a1a1a1"));
+                graphicsContext.setStroke(Color.web("#dcdfd6"));
                 graphicsContext.strokeLine(
                         resultPoints.get(vertexInPolygonInd - 1).getX(),
                         resultPoints.get(vertexInPolygonInd - 1).getY(),

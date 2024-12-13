@@ -12,6 +12,7 @@ public class Model {
     public ArrayList<Vector2f> textureVertices = new ArrayList<>();
     public ArrayList<Vector3f> normals = new ArrayList<>();
     public ArrayList<Polygon> polygons = new ArrayList<>();
+    public Boolean enable = true;
 
     public Model() {
         this.vertices = new ArrayList<>();
