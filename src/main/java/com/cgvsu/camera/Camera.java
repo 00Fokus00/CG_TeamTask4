@@ -1,7 +1,9 @@
-package com.cgvsu.render_engine;
+package com.cgvsu.camera;
+
 
 import com.cgvsu.math.matrices.Matrix4f;
 import com.cgvsu.math.vectors.Vector3f;
+import com.cgvsu.render_engine.GraphicConveyor;
 import lombok.Data;
 import static com.cgvsu.math.vectors.Vector3f.add;
 import static com.cgvsu.math.vectors.Vector3f.subtract;
@@ -39,11 +41,11 @@ public class Camera {
         this.target = add(this.target, translation);
     }
 
-    Matrix4f getViewMatrix() {
+    public Matrix4f getViewMatrix() {
         return GraphicConveyor.lookAt(position, target);
     }
 
-    Matrix4f getProjectionMatrix() {
+    public Matrix4f getProjectionMatrix() {
         return GraphicConveyor.perspective(fov, aspectRatio, nearPlane, farPlane);
     }
 

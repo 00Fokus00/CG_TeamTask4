@@ -7,6 +7,7 @@ import com.cgvsu.math.vectors.Vector2f;
 import com.cgvsu.math.vectors.Vector4f;
 import javafx.scene.canvas.GraphicsContext;
 import com.cgvsu.model.Model;
+import com.cgvsu.camera.Camera;
 import static com.cgvsu.math.matrices.Matrix4f.multiply;
 import static com.cgvsu.render_engine.GraphicConveyor.*;
 
