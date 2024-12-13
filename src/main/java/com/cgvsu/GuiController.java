@@ -2,6 +2,7 @@ package com.cgvsu;
 
 import com.cgvsu.math.vectors.Vector3f;
 import com.cgvsu.render_engine.RenderEngine;
+import com.cgvsu.render_engine.Triangulation;
 import javafx.fxml.FXML;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -20,10 +21,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.io.IOException;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Objects;
+
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 
 import com.cgvsu.model.Model;
 import com.cgvsu.objreader.ObjReader;
@@ -37,16 +39,18 @@ public class GuiController {
     public Pane canvasPane;
     @FXML
     public VBox modelsContainer;
+    @FXML
+    public VBox camerasContainer;
 
 
     //TODO вот в эти поля добавить координаты камеры
-    public TextField xCameraPositin;
-    public TextField yCameraPositin;
-    public TextField zCameraPositin;
+    public TextField xCameraPosition;
+    public TextField yCameraPosition;
+    public TextField zCameraPosition;
 
     //TODO вот в эти поля добавить координаты таргета
-    public TextField xTargetPositin;
-    public TextField yTargetPositin;
+    public TextField xTargetPosition;
+    public TextField yTargetPosition;
     public TextField zTargetPosition;
 
     //TODO это кнопочка для добавления новых камер, это к уважаемому Win122333)
@@ -65,7 +69,7 @@ public class GuiController {
     public TextField yTrans;
     public TextField zTrans;
     //Кнопка для афинных
-    public Button affineTransorm;
+    public Button affineTransform;
 
     public Button calcNormals;
     public Button triangulation;
@@ -78,32 +82,71 @@ public class GuiController {
     private Canvas canvas;
 
     private int modelCounter = 1;
+    private int cameraCounter = 2;
+    private int globalModelIndex = 0;
+    private int globalCameraIndex = 1;
 
-    private Model mesh = null;
-    private Model meshTriangulated = null;
+    private int currCameraIndex = 0;
 
-    private Camera camera = new Camera(
-            new Vector3f(0, 00, 100),
+    private final Model mesh = new Model();
+
+
+
+
+    private final Camera nullCamera = new Camera(
+            new Vector3f(0, 0, 100),
             new Vector3f(0, 0, 0),
             1.0F, 1, 0.01F, 100);
+
+    private Camera currCamera = new Camera(
+            new Vector3f(0, 0, 100),
+            new Vector3f(0, 0, 0),
+            1.0F, 1, 0.01F, 100);
+
+    private ArrayList<Camera> cameraArrayList = new ArrayList<>();
+    private ArrayList<Model> modelArrayList = new ArrayList<>();
+
 
     private Timeline timeline;
 
     @FXML
     private void initialize() {
+        //НЕ ЗНАЮ ГДЕ ДОЛЖЕН БЫТЬ ЭТОТ БЛОК
+        cameraArrayList.add(currCamera);
+        Label modelNameLabel = new Label("Камера main");
+        modelNameLabel.setStyle("-fx-text-fill: white;");
+        Button moveToButton = new Button("Переместиться");
+
+
+
+
+        moveToButton.setOnAction(event -> {
+           currCamera = cameraArrayList.get(0);
+        });
+
+        HBox modelBox = new HBox(5, modelNameLabel, moveToButton);
+        camerasContainer.getChildren().add(modelBox);
+
+
+
+
         canvasPane.prefWidthProperty().addListener((ov, oldValue, newValue) -> canvas.setWidth(newValue.doubleValue()));
         canvasPane.prefHeightProperty().addListener((ov, oldValue, newValue) -> canvas.setHeight(newValue.doubleValue()));
+
+
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.015), event -> {
             double width = canvas.getWidth();
             double height = canvas.getHeight();
 
             canvas.getGraphicsContext2D().clearRect(0, 0, width, height);
-            camera.setAspectRatio((float) (height / width));
-
-            if (mesh != null) {
-                RenderEngine.render(canvas.getGraphicsContext2D(), camera, mesh, (int) width, (int) height);
+            currCamera.setAspectRatio((float) (height / width));
+            for (Model model : modelArrayList) {
+                if (model != null) {
+                    RenderEngine.render(canvas.getGraphicsContext2D(), currCamera, model, (int) width, (int) height);
+                }
             }
+
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
@@ -129,18 +172,28 @@ public class GuiController {
         Button addTextureButton = new Button("Добавить текстуру ");
         Button removeTextureButton = new Button("Удалить текстуру ");
 
+        int currIndex = globalModelIndex;
+        globalModelIndex++;
+
         deleteButton.setOnAction(event -> {
             modelsContainer.getChildren().remove(deleteButton.getParent());
+            modelCounter--;
+            modelArrayList.set(currIndex, mesh);
         });
 
         HBox modelBox = new HBox(5, modelNameLabel, deleteButton, addTextureButton, removeTextureButton);
         modelsContainer.getChildren().add(modelBox);
 
+
+
         modelCounter++;
+
+
 
         try {
             String fileContent = Files.readString(fileName);
-            mesh = ObjReader.read(fileContent);
+            Model currModel = ObjReader.read(fileContent);
+            modelArrayList.add(currModel);
             // todo: обработка ошибок
         } catch (IOException exception) {
 
@@ -149,31 +202,79 @@ public class GuiController {
 
     @FXML
     public void handleCameraForward(ActionEvent actionEvent) {
-        camera.movePosition(new Vector3f(0, 0, -TRANSLATION));
+        currCamera.movePosition(new Vector3f(0, 0, -TRANSLATION));
     }
 
     @FXML
     public void handleCameraBackward(ActionEvent actionEvent) {
-        camera.movePosition(new Vector3f(0, 0, TRANSLATION));
+        currCamera.movePosition(new Vector3f(0, 0, TRANSLATION));
     }
 
     @FXML
     public void handleCameraLeft(ActionEvent actionEvent) {
-        camera.movePosition(new Vector3f(-TRANSLATION, 0, 0));
+        currCamera.movePosition(new Vector3f(-TRANSLATION, 0, 0));
     }
 
     @FXML
     public void handleCameraRight(ActionEvent actionEvent) {
-        camera.movePosition(new Vector3f(TRANSLATION, 0, 0));
+        currCamera.movePosition(new Vector3f(TRANSLATION, 0, 0));
     }
 
     @FXML
     public void handleCameraUp(ActionEvent actionEvent) {
-        camera.moveTarget(new Vector3f(0, TRANSLATION, 0));
+        currCamera.moveTarget(new Vector3f(0, TRANSLATION, 0));
     }
 
     @FXML
     public void handleCameraDown(ActionEvent actionEvent) {
-        camera.moveTarget(new Vector3f(0, -TRANSLATION, 0));
+        currCamera.moveTarget(new Vector3f(0, -TRANSLATION, 0));
+    }
+
+    public void triangulate(ActionEvent actionEvent) {
+
+    }
+
+    public void addCamera(ActionEvent actionEvent) {
+        Label cameraNameLabel = new Label("Камера: " + cameraCounter);
+        cameraNameLabel.setStyle("-fx-text-fill: white;");
+        Button deleteButton = new Button("Удалить");
+        Button moveToButton = new Button("Переместиться");
+
+
+        int currIndex = globalCameraIndex;
+        globalCameraIndex++;
+
+        moveToButton.setOnAction(event -> {
+            currCamera = cameraArrayList.get(currIndex);
+            currCameraIndex = currIndex;
+        });
+
+
+
+        deleteButton.setOnAction(event -> {
+            camerasContainer.getChildren().remove(deleteButton.getParent());
+            cameraCounter--;
+            if (currCameraIndex == currIndex) {
+                currCamera = cameraArrayList.get(0);
+            }
+            cameraArrayList.set(currIndex, nullCamera);
+        });
+
+        HBox cameraBox = new HBox(5, cameraNameLabel, deleteButton, moveToButton);
+        camerasContainer.getChildren().add(cameraBox);
+
+
+
+        cameraCounter++;
+
+        Camera newCam = new Camera(
+                new Vector3f(0, 0, 100),
+                new Vector3f(0, 0, 0),
+                1.0F, 1, 0.01F, 100);
+
+
+
+        cameraArrayList.add(newCam);
+
     }
 }

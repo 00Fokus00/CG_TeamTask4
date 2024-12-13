@@ -15,6 +15,8 @@ public class Camera {
     private float nearPlane;
     private float farPlane;
 
+
+
     public void setPosition(Vector3f position) {
         this.position = position;
     }
